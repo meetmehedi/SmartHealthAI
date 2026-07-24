@@ -461,72 +461,88 @@ function fmt(v, d=3)  { return v.toFixed(d); }
 let allTestResults = [];
 
 function runAll() {
-  // Expand base 243 real records to 920 total records matching 4 UCI databases
-  let fullData = [];
-  while (fullData.length < 920) {
-    UCI_DATA.forEach(r => {
-      if (fullData.length < 920) {
-        const noise = (Math.random() - 0.5) * 2;
-        const age   = Math.max(25, Math.min(80, Math.round(r[0] + noise)));
-        const sex   = r[1];
-        const bp    = Math.max(90, Math.min(200, Math.round(r[2] + noise)));
-        const maxHR = Math.max(80, Math.min(210, Math.round(r[3] + noise)));
-        const exang = r[4];
-        const target= r[5];
-        fullData.push([age, sex, bp, maxHR, exang, target]);
-      }
+  // Hide loading spinner and display content immediately so it never hangs
+  const loadDiv = document.getElementById('loadingDiv');
+  const mainDiv = document.getElementById('mainContent');
+  if (loadDiv) loadDiv.style.display = 'none';
+  if (mainDiv) mainDiv.style.display = 'block';
+
+  try {
+    // Expand base 243 real records to 920 total records matching 4 UCI databases
+    let fullData = [];
+    while (fullData.length < 920) {
+      UCI_DATA.forEach(r => {
+        if (fullData.length < 920) {
+          const noise = (Math.random() - 0.5) * 2;
+          const age   = Math.max(25, Math.min(80, Math.round(r[0] + noise)));
+          const sex   = r[1];
+          const bp    = Math.max(90, Math.min(200, Math.round(r[2] + noise)));
+          const maxHR = Math.max(80, Math.min(210, Math.round(r[3] + noise)));
+          const exang = r[4];
+          const target= r[5];
+          fullData.push([age, sex, bp, maxHR, exang, target]);
+        }
+      });
+    }
+
+    const shuffled = [...fullData].sort(() => 0.5 - Math.random());
+    const totalN = shuffled.length; // 920
+    const trainN = Math.floor(totalN * 0.70); // 644
+    const valN   = Math.floor(totalN * 0.15); // 138
+    const testN  = totalN - trainN - valN;    // 138
+
+    const trainSet = shuffled.slice(0, trainN);
+    const valSet   = shuffled.slice(trainN, trainN + valN);
+    const testSet  = shuffled.slice(trainN + valN);
+
+    // Update partition counts in UI
+    const spTrain = document.getElementById('spTrainCount');
+    const spVal   = document.getElementById('spValCount');
+    const spTest  = document.getElementById('spTestCount');
+    if (spTrain) spTrain.textContent = trainN;
+    if (spVal)   spVal.textContent   = valN;
+    if (spTest)  spTest.textContent  = testN;
+
+    // Train on 70% Training Set
+    knnTrain(trainSet);
+    nbTrain(trainSet);
+
+    const MODELS = [
+      { id: 'logistic', name: '📈 Logistic Regression', fn: logisticPredict, trainFn: null },
+      { id: 'knn',      name: '🔵 KNN (k=5)',             fn: knnPredict,      trainFn: knnTrain },
+      { id: 'nb',       name: '📊 Naive Bayes',            fn: nbPredict,       trainFn: nbTrain },
+      { id: 'dt',       name: '🌳 Decision Tree',          fn: dtPredict,       trainFn: null },
+    ];
+
+    const modelResults = MODELS.map(m => {
+      // Evaluate on 15% Validation Set
+      const valResults = valSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
+      const valMetrics = computeMetrics(valResults);
+
+      // Evaluate on 15% Test Set
+      const testResults = testSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
+      const testMetrics = computeMetrics(testResults);
+
+      const cv = kFoldCV(UCI_DATA, m.fn, m.trainFn);
+      return { ...m, valMetrics, metrics: testMetrics, results: testResults, cv };
     });
+
+    allTestResults = modelResults[0].results;
+
+    renderOverallMetrics(modelResults, trainN, valN, testN, totalN);
+    renderModelTabs(modelResults);
+    renderCrossValidation(modelResults);
+    renderDataTable(allTestResults);
+    
+    // Safely render charts
+    try {
+      renderComparisonCharts(modelResults);
+    } catch(err) {
+      console.warn('Chart rendering deferred:', err);
+    }
+  } catch(e) {
+    console.error('Validation engine exception:', e);
   }
-
-  const shuffled = [...fullData].sort(() => 0.5 - Math.random());
-  const totalN = shuffled.length; // 920
-  const trainN = Math.floor(totalN * 0.70); // 644
-  const valN   = Math.floor(totalN * 0.15); // 138
-  const testN  = totalN - trainN - valN;    // 138
-
-  const trainSet = shuffled.slice(0, trainN);
-  const valSet   = shuffled.slice(trainN, trainN + valN);
-  const testSet  = shuffled.slice(trainN + valN);
-
-  // Update partition counts in UI
-  document.getElementById('spTrainCount').textContent = trainN;
-  document.getElementById('spValCount').textContent   = valN;
-  document.getElementById('spTestCount').textContent  = testN;
-
-  // Train on 70% Training Set
-  knnTrain(trainSet);
-  nbTrain(trainSet);
-
-  const MODELS = [
-    { id: 'logistic', name: '📈 Logistic Regression', fn: logisticPredict, trainFn: null },
-    { id: 'knn',      name: '🔵 KNN (k=5)',             fn: knnPredict,      trainFn: knnTrain },
-    { id: 'nb',       name: '📊 Naive Bayes',            fn: nbPredict,       trainFn: nbTrain },
-    { id: 'dt',       name: '🌳 Decision Tree',          fn: dtPredict,       trainFn: null },
-  ];
-
-  const modelResults = MODELS.map(m => {
-    // Evaluate on 15% Validation Set
-    const valResults = valSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
-    const valMetrics = computeMetrics(valResults);
-
-    // Evaluate on 15% Test Set
-    const testResults = testSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
-    const testMetrics = computeMetrics(testResults);
-
-    const cv = kFoldCV(UCI_DATA, m.fn, m.trainFn);
-    return { ...m, valMetrics, metrics: testMetrics, results: testResults, cv };
-  });
-
-  allTestResults = modelResults[0].results;
-
-  renderOverallMetrics(modelResults, trainN, valN, testN, totalN);
-  renderModelTabs(modelResults);
-  renderCrossValidation(modelResults);
-  renderComparisonCharts(modelResults);
-  renderDataTable(allTestResults);
-
-  document.getElementById('loadingDiv').style.display = 'none';
-  document.getElementById('mainContent').style.display = 'block';
 }
 
 // ─── RENDER OVERALL METRICS ────────────────────────────
