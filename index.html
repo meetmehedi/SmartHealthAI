@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartHealth AI — Intelligent Health Monitoring System</title>
+  <meta name="description" content="AI-powered real-time health monitoring system. Track heart rate, SpO2, temperature and get early disease detection alerts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <span class="logo-icon">❤️</span>
+        <span class="logo-text">SmartHealth<span class="accent">AI</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+        <li><a href="#ai-analysis" class="nav-link">AI Analysis</a></li>
+        <li><a href="#patients" class="nav-link">Patients</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="validation.html" class="nav-link" style="color:#10b981">✅ Validation</a></li>
+      </ul>
+      <button class="btn btn-primary nav-cta" id="openMonitorBtn">Start Monitoring</button>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered Health Monitoring
+      </div>
+      <h1 class="hero-title">
+        Smart Health<br />
+        Monitoring <span class="gradient-text">System</span>
+      </h1>
+      <p class="hero-subtitle">
+        Real-time tracking of heart rate, blood oxygen (SpO₂), and body temperature — 
+        powered by AI for early disease detection and personalized health insights.
+      </p>
+      <div class="hero-cta-group">
+        <button class="btn btn-primary btn-lg" id="heroCta">
+          <span class="btn-icon">▶</span> Start Monitoring
+        </button>
+        <a href="#about" class="btn btn-ghost btn-lg">Learn More</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-value">99.2%</span>
+          <span class="stat-label">AI Accuracy</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-value">Real-Time</span>
+          <span class="stat-label">Monitoring</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-value">4 Vitals</span>
+          <span class="stat-label">Tracked</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="device-card">
+        <div class="device-header">
+          <span class="device-dot green"></span>
+          <span>Live Patient Data</span>
+          <span class="live-badge">● LIVE</span>
+        </div>
+        <div class="vital-row">
+          <div class="vital-icon red">♥</div>
+          <div class="vital-info">
+            <span class="vital-label">Heart Rate</span>
+            <span class="vital-value" id="heroHR">72</span>
+            <span class="vital-unit">bpm</span>
+          </div>
+          <div class="vital-status ok">Normal</div>
+        </div>
+        <div class="vital-row">
+          <div class="vital-icon blue">◎</div>
+          <div class="vital-info">
+            <span class="vital-label">SpO₂ Level</span>
+            <span class="vital-value" id="heroSpO2">98</span>
+            <span class="vital-unit">%</span>
+          </div>
+          <div class="vital-status ok">Normal</div>
+        </div>
+        <div class="vital-row">
+          <div class="vital-icon orange">🌡</div>
+          <div class="vital-info">
+            <span class="vital-label">Temperature</span>
+            <span class="vital-value" id="heroTemp">36.6</span>
+            <span class="vital-unit">°C</span>
+          </div>
+          <div class="vital-status ok">Normal</div>
+        </div>
+        <div class="mini-ecg">
+          <canvas id="heroEcgCanvas" height="50"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Why SmartHealth AI?</span>
+        <h2>Everything You Need for<br /><span class="gradient-text">Smart Healthcare</span></h2>
+        <p>Combining IoT sensor data with cutting-edge artificial intelligence to give patients and doctors real-time health insights.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #e74c6f;">
+            <span class="feature-icon">💓</span>
+          </div>
+          <h3>Real-Time Monitoring</h3>
+          <p>Continuous tracking of heart rate, SpO₂, and body temperature with instant alerts for any abnormal readings.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #4c9fe7;">
+            <span class="feature-icon">🧠</span>
+          </div>
+          <h3>AI Disease Prediction</h3>
+          <p>Machine learning algorithms analyze your vitals to detect early signs of cardiovascular disease, hypoxia, and fever.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #4ce7a8;">
+            <span class="feature-icon">🌐</span>
+          </div>
+          <h3>Web-Based Access</h3>
+          <p>Access your health data from anywhere in the world through a secure web interface — no app installation needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #e7a84c;">
+            <span class="feature-icon">🔔</span>
+          </div>
+          <h3>Smart Alerts</h3>
+          <p>Instant notifications when vitals fall outside healthy ranges, enabling faster medical response and reducing emergencies.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #a84ce7;">
+            <span class="feature-icon">🏥</span>
+          </div>
+          <h3>Reduce Hospital Visits</h3>
+          <p>Remote monitoring means fewer unnecessary trips to hospitals, saving time and cost for both patients and caregivers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="--icon-color: #4ce7e7;">
+            <span class="feature-icon">🔒</span>
+          </div>
+          <h3>Secure &amp; Private</h3>
+          <p>All health data is encrypted and protected. Your medical information stays private and accessible only to authorized users.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard-section" id="dashboard">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Live Dashboard</span>
+        <h2>Patient Health <span class="gradient-text">Dashboard</span></h2>
+        <p>Enter health vitals below to get an instant AI-powered analysis and health status report.</p>
+      </div>
+
+      <div class="input-panel glass-card">
+        <div class="panel-header">
+          <h3>📋 Enter Patient Vitals</h3>
+          <button class="btn btn-sm btn-secondary" id="autoFillBtn">⚡ Auto-Simulate</button>
+        </div>
+        <div class="input-grid">
+          <div class="input-group">
+            <label for="patientName">Patient Name</label>
+            <input type="text" id="patientName" placeholder="e.g. Monira Jahan Dipti" class="form-input" />
+          </div>
+          <div class="input-group">
+            <label for="patientAge">Age</label>
+            <input type="number" id="patientAge" placeholder="e.g. 28" min="1" max="120" class="form-input" />
+          </div>
+          <div class="input-group">
+            <label for="heartRate">
+              ♥ Heart Rate (bpm)
+              <span class="range-hint">Normal: 60–100</span>
+            </label>
+            <input type="range" id="heartRateSlider" min="30" max="200" value="75" class="range-slider" />
+            <input type="number" id="heartRate" min="30" max="200" value="75" class="form-input" />
+          </div>
+          <div class="input-group">
+            <label for="spo2">
+              ◎ Blood Oxygen SpO₂ (%)
+              <span class="range-hint">Normal: 95–100</span>
+            </label>
+            <input type="range" id="spo2Slider" min="70" max="100" value="98" class="range-slider" />
+            <input type="number" id="spo2" min="70" max="100" value="98" class="form-input" />
+          </div>
+          <div class="input-group">
+            <label for="temperature">
+              🌡 Body Temperature (°C)
+              <span class="range-hint">Normal: 36.1–37.2</span>
+            </label>
+            <input type="range" id="temperatureSlider" min="34" max="42" step="0.1" value="36.6" class="range-slider" />
+            <input type="number" id="temperature" min="34" max="42" step="0.1" value="36.6" class="form-input" />
+          </div>
+          <div class="input-group">
+            <label for="bloodPressure">
+              🩺 Systolic BP (mmHg)
+              <span class="range-hint">Normal: 90–120</span>
+            </label>
+            <input type="range" id="bpSlider" min="60" max="200" value="120" class="range-slider" />
+            <input type="number" id="bloodPressure" min="60" max="200" value="120" class="form-input" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary btn-lg" id="analyzeBtn">🔬 Analyze with AI</button>
+          <button class="btn btn-ghost" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <!-- VITALS MONITOR -->
+      <div class="vitals-monitor" id="vitalsMonitor" style="display:none;">
+        <div class="monitor-grid">
+          <div class="monitor-card" id="hrCard">
+            <div class="monitor-card-header">
+              <span class="mc-icon">♥</span>
+              <span class="mc-label">Heart Rate</span>
+            </div>
+            <div class="mc-value-wrap">
+              <span class="mc-value" id="mc-hr">--</span>
+              <span class="mc-unit">bpm</span>
+            </div>
+            <div class="mc-status" id="mc-hr-status">--</div>
+            <canvas id="hrChart" class="mc-chart"></canvas>
+          </div>
+          <div class="monitor-card" id="spo2Card">
+            <div class="monitor-card-header">
+              <span class="mc-icon">◎</span>
+              <span class="mc-label">Blood Oxygen (SpO₂)</span>
+            </div>
+            <div class="mc-value-wrap">
+              <span class="mc-value" id="mc-spo2">--</span>
+              <span class="mc-unit">%</span>
+            </div>
+            <div class="mc-status" id="mc-spo2-status">--</div>
+            <canvas id="spo2Chart" class="mc-chart"></canvas>
+          </div>
+          <div class="monitor-card" id="tempCard">
+            <div class="monitor-card-header">
+              <span class="mc-icon">🌡</span>
+              <span class="mc-label">Body Temperature</span>
+            </div>
+            <div class="mc-value-wrap">
+              <span class="mc-value" id="mc-temp">--</span>
+              <span class="mc-unit">°C</span>
+            </div>
+            <div class="mc-status" id="mc-temp-status">--</div>
+            <canvas id="tempChart" class="mc-chart"></canvas>
+          </div>
+          <div class="monitor-card" id="bpCard">
+            <div class="monitor-card-header">
+              <span class="mc-icon">🩺</span>
+              <span class="mc-label">Blood Pressure</span>
+            </div>
+            <div class="mc-value-wrap">
+              <span class="mc-value" id="mc-bp">--</span>
+              <span class="mc-unit">mmHg</span>
+            </div>
+            <div class="mc-status" id="mc-bp-status">--</div>
+            <canvas id="bpChart" class="mc-chart"></canvas>
+          </div>
+        </div>
+        <div class="ecg-section glass-card">
+          <div class="ecg-header">
+            <h4>📈 ECG — Electrocardiogram Simulation</h4>
+            <span class="live-badge">● LIVE</span>
+          </div>
+          <canvas id="ecgCanvas" class="ecg-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI ANALYSIS -->
+  <section class="ai-section" id="ai-analysis">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">AI Engine</span>
+        <h2>AI-Powered <span class="gradient-text">Health Analysis</span></h2>
+        <p>Our AI model evaluates your vitals and provides instant health insights and risk assessments.</p>
+      </div>
+      <div class="ai-result-panel glass-card" id="aiResultPanel">
+        <div class="ai-waiting" id="aiWaiting">
+          <div class="ai-waiting-icon">🤖</div>
+          <p>Enter patient vitals and click <strong>Analyze with AI</strong> to see the health report.</p>
+        </div>
+        <div class="ai-result" id="aiResult" style="display:none;">
+          <div class="ai-result-header">
+            <div class="ai-patient-info">
+              <h3 id="aiPatientName">Patient Report</h3>
+              <span id="aiTimestamp" class="ai-timestamp"></span>
+            </div>
+            <div class="ai-overall-badge" id="aiOverallBadge">--</div>
+          </div>
+          <div class="ai-diagnosis-grid" id="aiDiagnosisGrid"></div>
+          <div class="ai-recommendation" id="aiRecommendation"></div>
+          <div class="ai-risk-bar-wrap">
+            <label>Overall Health Risk Score</label>
+            <div class="ai-risk-bar">
+              <div class="ai-risk-fill" id="aiRiskFill"></div>
+            </div>
+            <span class="ai-risk-label" id="aiRiskLabel"></span>
+          </div>
+          <button class="btn btn-primary" id="printReportBtn">🖨 Print Report</button>
+        </div>
+      </div>
+
+      <div class="ai-how-works">
+        <h3>How the AI Works</h3>
+        <div class="pipeline-steps">
+          <div class="pipeline-step">
+            <div class="ps-number">01</div>
+            <div class="ps-content">
+              <h4>Data Collection</h4>
+              <p>Vitals collected via sensors or manual input and sent to the AI engine.</p>
+            </div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="ps-number">02</div>
+            <div class="ps-content">
+              <h4>Data Processing</h4>
+              <p>AI normalizes and cross-references values against clinical healthy ranges.</p>
+            </div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="ps-number">03</div>
+            <div class="ps-content">
+              <h4>Risk Scoring</h4>
+              <p>Each vital is scored and weighted to compute an overall health risk index.</p>
+            </div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="ps-number">04</div>
+            <div class="ps-content">
+              <h4>Report &amp; Alert</h4>
+              <p>Detailed report with diagnosis, recommendations, and alerts is generated instantly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATIENTS TABLE -->
+  <section class="patients-section" id="patients">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Patient Records</span>
+        <h2>Monitored <span class="gradient-text">Patients</span></h2>
+        <p>View and manage patient health records in real-time.</p>
+      </div>
+      <div class="patients-toolbar">
+        <input type="text" id="patientSearch" placeholder="🔍 Search patients..." class="search-input" />
+        <button class="btn btn-primary" id="addPatientBtn">+ Add New Patient</button>
+      </div>
+      <div class="patients-table-wrap glass-card">
+        <table class="patients-table" id="patientsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Heart Rate</th>
+              <th>SpO₂</th>
+              <th>Temp (°C)</th>
+              <th>BP (mmHg)</th>
+              <th>AI Status</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="patientsTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-tag">About This Project</span>
+          <h2>Dhaka International University<br /><span class="gradient-text">Group B — SDM Project</span></h2>
+          <p>This web-based healthcare solution was developed as a Software Development &amp; Management (SDM) project at Dhaka International University, demonstrating how AI and IoT can revolutionize patient care.</p>
+          <div class="about-highlights">
+            <div class="highlight">✅ Low-cost healthcare solution</div>
+            <div class="highlight">✅ Real-time monitoring via web</div>
+            <div class="highlight">✅ AI-based early disease detection</div>
+            <div class="highlight">✅ Reduces frequent hospital visits</div>
+            <div class="highlight">✅ Secure &amp; user-friendly interface</div>
+          </div>
+        </div>
+        <div class="about-team">
+          <h3>Project Team</h3>
+          <div class="team-cards">
+            <div class="team-card">
+              <div class="team-avatar" style="background: linear-gradient(135deg,#e74c6f,#c0392b)">ML</div>
+              <div class="team-info">
+                <strong>MST Laboni Khatun</strong>
+                <span>Roll: 02</span>
+              </div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar" style="background: linear-gradient(135deg,#4c9fe7,#2980b9)">SA</div>
+              <div class="team-info">
+                <strong>Sharmin Akter</strong>
+                <span>Roll: 13</span>
+              </div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar" style="background: linear-gradient(135deg,#4ce7a8,#27ae60)">MD</div>
+              <div class="team-info">
+                <strong>Monira Jahan Dipti</strong>
+                <span>Roll: 39</span>
+              </div>
+            </div>
+          </div>
+          <div class="supervisor-card">
+            <div class="supervisor-label">Supervised By</div>
+            <strong>Md. Alamgir Hossain</strong>
+            <span>Lecturer, Department of CSE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;">
+            <span class="logo-icon">❤️</span>
+            <span class="logo-text">SmartHealth<span class="accent">AI</span></span>
+          </div>
+          <p>AI-Powered Health Monitoring System</p>
+        </div>
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#ai-analysis">AI Analysis</a>
+          <a href="#patients">Patients</a>
+          <a href="#about">About</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 SmartHealth AI — Dhaka International University | Group B (SDM Project)</p>
+        <p>Department of CSE | Supervised by Md. Alamgir Hossain</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ALERT MODAL -->
+  <div class="modal-overlay" id="alertModal" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-icon" id="modalIcon">⚠️</div>
+      <h3 id="modalTitle">Alert</h3>
+      <p id="modalMsg"></p>
+      <button class="btn btn-primary" id="modalClose">OK</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

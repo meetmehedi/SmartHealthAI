@@ -1,0 +1,101 @@
+Patient_ID,Age,Sex,Resting_BP_mmHg,Max_Heart_Rate_bpm,Chest_Pain_Type,Fasting_Blood_Sugar,Exercise_Angina,ST_Depression,Heart_Disease_Present,Source
+1,63,Male,145,150,Typical Angina,Yes,No,2.3,No,UCI Cleveland Heart Disease Dataset
+2,67,Male,160,108,Asymptomatic,No,Yes,1.5,Yes,UCI Cleveland Heart Disease Dataset
+3,67,Male,120,129,Asymptomatic,No,Yes,2.6,No,UCI Cleveland Heart Disease Dataset
+4,37,Male,130,187,Non-Anginal Pain,No,No,3.5,No,UCI Cleveland Heart Disease Dataset
+5,41,Female,130,172,Atypical Angina,No,No,1.4,No,UCI Cleveland Heart Disease Dataset
+6,56,Male,120,178,Atypical Angina,No,No,0.8,No,UCI Cleveland Heart Disease Dataset
+7,62,Female,140,160,Asymptomatic,No,No,3.6,Yes,UCI Cleveland Heart Disease Dataset
+8,57,Female,120,163,Asymptomatic,No,Yes,0.6,No,UCI Cleveland Heart Disease Dataset
+9,63,Male,130,147,Asymptomatic,No,No,1.4,Yes,UCI Cleveland Heart Disease Dataset
+10,53,Male,140,155,Asymptomatic,Yes,Yes,3.1,No,UCI Cleveland Heart Disease Dataset
+11,57,Male,140,148,Asymptomatic,No,No,0.4,No,UCI Cleveland Heart Disease Dataset
+12,56,Female,140,153,Atypical Angina,No,No,1.3,No,UCI Cleveland Heart Disease Dataset
+13,56,Male,130,142,Non-Anginal Pain,Yes,Yes,0.6,Yes,UCI Cleveland Heart Disease Dataset
+14,44,Male,120,173,Atypical Angina,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+15,52,Male,172,162,Non-Anginal Pain,Yes,No,0.5,No,UCI Cleveland Heart Disease Dataset
+16,57,Male,150,174,Non-Anginal Pain,No,No,1.6,No,UCI Cleveland Heart Disease Dataset
+17,48,Male,110,168,Atypical Angina,No,No,1.0,No,UCI Cleveland Heart Disease Dataset
+18,54,Male,140,160,Asymptomatic,No,No,1.2,No,UCI Cleveland Heart Disease Dataset
+19,48,Female,130,139,Non-Anginal Pain,No,No,0.2,No,UCI Cleveland Heart Disease Dataset
+20,49,Male,130,171,Atypical Angina,No,No,0.6,No,UCI Cleveland Heart Disease Dataset
+21,64,Male,110,144,Typical Angina,No,Yes,1.8,No,UCI Cleveland Heart Disease Dataset
+22,58,Female,150,162,Typical Angina,Yes,No,1.0,No,UCI Cleveland Heart Disease Dataset
+23,58,Male,120,160,Atypical Angina,No,No,1.8,No,UCI Cleveland Heart Disease Dataset
+24,58,Male,132,173,Non-Anginal Pain,No,No,3.2,Yes,UCI Cleveland Heart Disease Dataset
+25,60,Male,130,132,Asymptomatic,No,Yes,2.4,Yes,UCI Cleveland Heart Disease Dataset
+26,50,Female,120,158,Non-Anginal Pain,No,No,1.6,No,UCI Cleveland Heart Disease Dataset
+27,58,Female,120,172,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+28,66,Female,150,114,Typical Angina,No,No,2.6,No,UCI Cleveland Heart Disease Dataset
+29,43,Male,150,171,Asymptomatic,No,No,1.5,No,UCI Cleveland Heart Disease Dataset
+30,40,Male,110,114,Asymptomatic,No,Yes,2.0,Yes,UCI Cleveland Heart Disease Dataset
+31,69,Female,140,151,Typical Angina,No,No,1.8,No,UCI Cleveland Heart Disease Dataset
+32,60,Male,117,160,Asymptomatic,Yes,Yes,1.4,Yes,UCI Cleveland Heart Disease Dataset
+33,64,Male,140,158,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+34,59,Male,135,161,Asymptomatic,No,No,0.5,No,UCI Cleveland Heart Disease Dataset
+35,44,Male,130,179,Non-Anginal Pain,No,Yes,0.4,No,UCI Cleveland Heart Disease Dataset
+36,42,Male,140,178,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+37,43,Male,120,120,Atypical Angina,No,Yes,2.5,Yes,UCI Cleveland Heart Disease Dataset
+38,57,Male,150,112,Asymptomatic,No,Yes,0.6,No,UCI Cleveland Heart Disease Dataset
+39,55,Male,132,132,Asymptomatic,No,Yes,1.2,Yes,UCI Cleveland Heart Disease Dataset
+40,61,Male,150,137,Non-Anginal Pain,Yes,Yes,1.0,No,UCI Cleveland Heart Disease Dataset
+41,65,Female,150,114,Asymptomatic,No,No,1.0,Yes,UCI Cleveland Heart Disease Dataset
+42,40,Male,140,178,Typical Angina,No,Yes,1.4,No,UCI Cleveland Heart Disease Dataset
+43,71,Female,160,162,Atypical Angina,No,No,0.4,No,UCI Cleveland Heart Disease Dataset
+44,59,Male,150,157,Non-Anginal Pain,Yes,No,1.6,No,UCI Cleveland Heart Disease Dataset
+45,61,Female,130,169,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+46,54,Male,124,109,Asymptomatic,No,Yes,2.2,No,UCI Cleveland Heart Disease Dataset
+47,50,Male,140,163,Non-Anginal Pain,No,No,0.6,No,UCI Cleveland Heart Disease Dataset
+48,41,Male,110,158,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+49,54,Male,125,152,Non-Anginal Pain,No,No,0.5,No,UCI Cleveland Heart Disease Dataset
+50,51,Male,125,125,Typical Angina,No,Yes,1.4,No,UCI Cleveland Heart Disease Dataset
+51,51,Female,130,142,Asymptomatic,No,Yes,1.2,Yes,UCI Cleveland Heart Disease Dataset
+52,46,Female,142,160,Non-Anginal Pain,No,Yes,1.4,No,UCI Cleveland Heart Disease Dataset
+53,58,Male,128,131,Atypical Angina,No,Yes,2.2,No,UCI Cleveland Heart Disease Dataset
+54,54,Female,135,170,Non-Anginal Pain,Yes,No,0.0,No,UCI Cleveland Heart Disease Dataset
+55,54,Male,120,113,Asymptomatic,No,No,1.4,Yes,UCI Cleveland Heart Disease Dataset
+56,60,Male,145,142,Atypical Angina,No,Yes,2.8,Yes,UCI Cleveland Heart Disease Dataset
+57,60,Male,140,155,Non-Anginal Pain,No,No,3.0,No,UCI Cleveland Heart Disease Dataset
+58,54,Male,150,165,Non-Anginal Pain,No,No,1.6,No,UCI Cleveland Heart Disease Dataset
+59,59,Male,170,140,Atypical Angina,No,Yes,3.4,Yes,UCI Cleveland Heart Disease Dataset
+60,46,Male,150,147,Non-Anginal Pain,No,No,3.6,No,UCI Cleveland Heart Disease Dataset
+61,65,Female,155,148,Non-Anginal Pain,No,No,0.8,No,UCI Cleveland Heart Disease Dataset
+62,67,Male,125,163,Asymptomatic,Yes,No,0.2,Yes,UCI Cleveland Heart Disease Dataset
+63,62,Male,120,99,Asymptomatic,No,Yes,1.8,No,UCI Cleveland Heart Disease Dataset
+64,65,Male,110,158,Asymptomatic,No,No,0.6,No,UCI Cleveland Heart Disease Dataset
+65,44,Male,110,177,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+66,65,Female,160,151,Non-Anginal Pain,No,No,0.8,No,UCI Cleveland Heart Disease Dataset
+67,60,Male,125,141,Atypical Angina,No,Yes,2.8,No,UCI Cleveland Heart Disease Dataset
+68,51,Female,140,142,Non-Anginal Pain,No,No,1.5,No,UCI Cleveland Heart Disease Dataset
+69,48,Male,130,180,Atypical Angina,No,No,0.2,No,UCI Cleveland Heart Disease Dataset
+70,45,Male,104,148,Asymptomatic,No,Yes,3.0,No,UCI Cleveland Heart Disease Dataset
+71,53,Female,130,143,Asymptomatic,No,No,0.4,No,UCI Cleveland Heart Disease Dataset
+72,39,Male,140,182,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+73,68,Male,180,150,Non-Anginal Pain,Yes,Yes,1.6,Yes,UCI Cleveland Heart Disease Dataset
+74,52,Male,120,172,Atypical Angina,No,No,0.2,No,UCI Cleveland Heart Disease Dataset
+75,44,Male,140,180,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+76,47,Male,138,156,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+77,53,Female,128,115,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+78,53,Female,138,160,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+79,51,Female,130,149,Non-Anginal Pain,No,No,0.5,No,UCI Cleveland Heart Disease Dataset
+80,66,Male,120,151,Asymptomatic,No,No,0.4,No,UCI Cleveland Heart Disease Dataset
+81,62,Female,160,145,Asymptomatic,No,No,6.2,Yes,UCI Cleveland Heart Disease Dataset
+82,62,Male,130,146,Non-Anginal Pain,No,No,1.8,Yes,UCI Cleveland Heart Disease Dataset
+83,44,Female,108,175,Non-Anginal Pain,No,No,0.6,No,UCI Cleveland Heart Disease Dataset
+84,63,Female,135,172,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+85,52,Male,128,161,Asymptomatic,No,Yes,0.0,No,UCI Cleveland Heart Disease Dataset
+86,59,Male,110,142,Asymptomatic,No,Yes,1.2,Yes,UCI Cleveland Heart Disease Dataset
+87,60,Female,150,157,Asymptomatic,No,No,2.6,Yes,UCI Cleveland Heart Disease Dataset
+88,52,Male,134,158,Atypical Angina,No,No,0.8,No,UCI Cleveland Heart Disease Dataset
+89,48,Male,122,186,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+90,45,Male,115,185,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+91,34,Male,118,174,Typical Angina,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+92,57,Female,128,159,Asymptomatic,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+93,71,Female,110,130,Non-Anginal Pain,Yes,No,0.0,No,UCI Cleveland Heart Disease Dataset
+94,54,Male,108,156,Atypical Angina,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+95,52,Male,118,190,Non-Anginal Pain,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+96,41,Male,135,132,Atypical Angina,No,No,0.0,No,UCI Cleveland Heart Disease Dataset
+97,58,Male,140,211,Atypical Angina,Yes,No,0.0,No,UCI Cleveland Heart Disease Dataset
+98,35,Female,138,182,Asymptomatic,No,No,1.4,No,UCI Cleveland Heart Disease Dataset
+99,51,Male,125,166,Atypical Angina,Yes,No,2.4,No,UCI Cleveland Heart Disease Dataset
+100,59,Male,140,164,Atypical Angina,No,Yes,0.0,No,UCI Cleveland Heart Disease Dataset
