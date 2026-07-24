@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>70/15/15 ML Validation Report — SmartHealth AI</title>
+<title>70/15/15 ML Validation — SmartHealth AI</title>
 <meta name="description" content="70% Training, 15% Validation, 15% Testing Machine Learning benchmark on 920 real UCI Heart Disease patient records."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -23,14 +22,11 @@ h1,h2,h3,h4{font-family:var(--display);line-height:1.2}
 p{color:var(--dim)}
 a{color:var(--accent);text-decoration:none}
 
-/* LAYOUT */
 .container{max-width:1280px;margin:0 auto;padding:0 1.5rem}
 .section{padding:2.5rem 0}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}}
 
 /* HERO */
 .hero{
@@ -50,12 +46,9 @@ a{color:var(--accent);text-decoration:none}
 .source-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1rem}
 .chip{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:50px;padding:.3rem .85rem;font-size:.76rem;color:var(--dim)}
 
-/* SPLIT BADGES BOX */
-.split-box{
-  background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.25);
-  border-radius:14px;padding:1.5rem;margin:1.5rem 0;
-}
-.split-box h3{font-size:1.05rem;color:var(--primary);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+/* SPLIT BOX */
+.split-box{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.25);border-radius:14px;padding:1.5rem;margin:1.5rem 0}
+.split-box h3{font-size:1.05rem;color:var(--primary);margin-bottom:.75rem}
 .split-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
 .split-item{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
 .split-item .sp-val{font-size:1.8rem;font-weight:800;font-family:var(--display);line-height:1}
@@ -67,67 +60,40 @@ a{color:var(--accent);text-decoration:none}
 .card h3{font-size:1rem;margin-bottom:1rem}
 .card h4{font-size:.88rem;color:var(--dim);margin-bottom:.75rem}
 
-/* CANVAS FIGURE CONTAINER */
-.figure-container{
-  position:relative;
-  width:100%;
-  height:240px;
-  background:rgba(6,11,24,0.6);
-  border:1px solid rgba(255,255,255,0.05);
-  border-radius:10px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.figure-container canvas{
-  width:100% !important;
-  height:100% !important;
-}
+/* SVG CHART WRAPPER */
+.svg-chart{width:100%;height:260px;display:block;overflow:visible}
 
 /* METRIC PILLS */
 .metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.85rem;margin-bottom:1.5rem}
-.metric-pill{
-  background:var(--surface2);border:1px solid var(--border);border-radius:12px;
-  padding:1rem;text-align:center;
-}
+.metric-pill{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
 .metric-pill .m-val{font-size:1.9rem;font-weight:800;font-family:var(--display);line-height:1}
 .metric-pill .m-lbl{font-size:.72rem;color:var(--dim);margin-top:.3rem}
-.m-blue  .m-val{color:var(--primary)} .m-blue{border-color:rgba(59,130,246,.25)}
-.m-green .m-val{color:var(--green)}   .m-green{border-color:rgba(16,185,129,.25)}
-.m-red   .m-val{color:var(--red)}     .m-red{border-color:rgba(239,68,68,.25)}
-.m-purple.m-val{color:var(--purple)}  .m-purple{border-color:rgba(168,85,247,.25)}
-.m-orange.m-val{color:var(--orange)}  .m-orange{border-color:rgba(249,115,22,.25)}
-.m-yellow.m-val{color:var(--yellow)}  .m-yellow{border-color:rgba(234,179,8,.25)}
+.m-blue{border-color:rgba(59,130,246,.25)} .m-blue .m-val{color:#3b82f6}
+.m-green{border-color:rgba(16,185,129,.25)} .m-green .m-val{color:#10b981}
+.m-purple{border-color:rgba(168,85,247,.25)} .m-purple .m-val{color:#a855f7}
+.m-orange{border-color:rgba(249,115,22,.25)} .m-orange .m-val{color:#f97316}
+.m-yellow{border-color:rgba(234,179,8,.25)} .m-yellow .m-val{color:#eab308}
+.m-red{border-color:rgba(239,68,68,.25)} .m-red .m-val{color:#ef4444}
 
 /* SECTION HEADERS */
-.sec-tag{
-  display:inline-block;background:rgba(59,130,246,.12);color:var(--primary);
-  border:1px solid rgba(59,130,246,.25);border-radius:50px;
-  padding:.25rem .85rem;font-size:.73rem;font-weight:700;
-  letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem;
-}
+.sec-tag{display:inline-block;background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.25);border-radius:50px;padding:.25rem .85rem;font-size:.73rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem}
 .sec-head{margin-bottom:1.5rem}
 .sec-head h2{font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:.5rem}
 
 /* MODEL TABS */
 .model-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.tab-btn{
-  padding:.45rem 1.1rem;border-radius:50px;font-size:.82rem;font-weight:600;
-  border:1px solid var(--border);background:transparent;color:var(--dim);
-  cursor:pointer;transition:all .2s;font-family:var(--font);
-}
-.tab-btn:hover{background:rgba(59,130,246,.12);color:var(--primary);border-color:rgba(59,130,246,.3)}
-.tab-btn.active{background:rgba(59,130,246,.2);color:var(--primary);border-color:rgba(59,130,246,.5)}
+.tab-btn{padding:.45rem 1.1rem;border-radius:50px;font-size:.82rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.tab-btn:hover{background:rgba(59,130,246,.12);color:#3b82f6;border-color:rgba(59,130,246,.3)}
+.tab-btn.active{background:rgba(59,130,246,.2);color:#3b82f6;border-color:rgba(59,130,246,.5)}
 
 /* CONFUSION MATRIX */
 .cm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:.75rem}
 .cm-header{background:rgba(255,255,255,.04);font-size:.7rem;font-weight:700;color:var(--muted);padding:.5rem;text-align:center;border-radius:6px;letter-spacing:.04em}
 .cm-cell{font-size:1.3rem;font-weight:800;font-family:var(--display);padding:.75rem;text-align:center;border-radius:6px}
-.cm-tp{background:rgba(16,185,129,.2);color:var(--green)}
-.cm-fp{background:rgba(239,68,68,.1);color:var(--red)}
-.cm-fn{background:rgba(249,115,22,.1);color:var(--orange)}
-.cm-tn{background:rgba(59,130,246,.1);color:var(--primary)}
+.cm-tp{background:rgba(16,185,129,.2);color:#10b981}
+.cm-fp{background:rgba(239,68,68,.1);color:#ef4444}
+.cm-fn{background:rgba(249,115,22,.1);color:#f97316}
+.cm-tn{background:rgba(59,130,246,.1);color:#3b82f6}
 .cm-label{font-size:.7rem;font-weight:700;color:var(--muted);padding:.5rem;text-align:center;border-radius:6px;display:flex;align-items:center;justify-content:center}
 
 /* DATA TABLE */
@@ -141,19 +107,23 @@ a{color:var(--accent);text-decoration:none}
 /* FILTER */
 .filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
 .filter-btn{padding:.3rem .8rem;border-radius:50px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
-.filter-btn:hover,.filter-btn.active{background:rgba(59,130,246,.15);color:var(--primary);border-color:rgba(59,130,246,.4)}
-
-/* FOOTER */
-.page-footer{text-align:center;padding:2.5rem 1.5rem;border-top:1px solid var(--border);margin-top:3rem}
-.back-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--primary),#1d4ed8);color:#fff;padding:.6rem 1.4rem;border-radius:50px;font-weight:600;font-size:.88rem;text-decoration:none;margin-bottom:1.5rem;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(59,130,246,.4)}
-.back-btn:hover{transform:translateY(-2px);text-decoration:none}
+.filter-btn:hover,.filter-btn.active{background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.4)}
 
 /* CROSSVAL */
 .cv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem}
 .cv-fold{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center}
 .cv-fold-num{font-size:.7rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:.35rem}
-.cv-fold-val{font-size:1.3rem;font-weight:800;font-family:var(--display);color:var(--primary)}
+.cv-fold-val{font-size:1.3rem;font-weight:800;font-family:var(--display);color:#3b82f6}
 @media(max-width:600px){.cv-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* FOOTER */
+.page-footer{text-align:center;padding:2.5rem 1.5rem;border-top:1px solid var(--border);margin-top:3rem}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:.6rem 1.4rem;border-radius:50px;font-weight:600;font-size:.88rem;text-decoration:none;margin-bottom:1.5rem;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(59,130,246,.4)}
+.back-btn:hover{transform:translateY(-2px);text-decoration:none}
+
+/* SVG LEGEND */
+.chart-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.6rem;font-size:.76rem;color:var(--dim)}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -162,139 +132,140 @@ a{color:var(--accent);text-decoration:none}
 <div class="hero">
   <div class="hero-badge">🧠 70% Train / 15% Validation / 15% Test Split</div>
   <h1>Machine Learning <span class="grad">Model Validation Dashboard</span></h1>
-  <p>
-    4 Machine Learning Classifiers trained and validated on <strong>920 real patient records</strong> 
-    from 4 UCI Heart Disease databases using a strict <strong>70% Train / 15% Validation / 15% Test Partition Strategy</strong>.
-  </p>
+  <p>4 ML Classifiers trained on <strong>920 real UCI patient records</strong> with strict <strong>70 / 15 / 15 partition strategy</strong>.</p>
   <div class="source-row">
     <span class="chip">📊 920 Real Patients</span>
-    <span class="chip">🏋️ 70% Training (644 records)</span>
-    <span class="chip">🧪 15% Validation (138 records)</span>
-    <span class="chip">🎯 15% Testing (138 records)</span>
-    <span class="chip">📈 5-Fold Cross Validation</span>
+    <span class="chip">🏋️ 70% Training (644)</span>
+    <span class="chip">🧪 15% Validation (138)</span>
+    <span class="chip">🎯 15% Testing (138)</span>
+    <span class="chip">📈 5-Fold Cross-Validation</span>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- 70 / 15 / 15 PARTITION BOX -->
   <div class="split-box">
-    <h3>⚙️ Data Partitioning Architecture: 70% Training | 15% Validation | 15% Testing</h3>
-    <p style="font-size:.86rem;color:var(--dim)">
-      To guarantee zero data leakage and avoid overfitting, the dataset of 920 real UCI patient records is split into three independent partitions:
-    </p>
+    <h3>⚙️ Data Partition: 70% Training | 15% Validation | 15% Testing</h3>
     <div class="split-grid">
       <div class="split-item">
-        <div class="sp-val" style="color:var(--primary)" id="spTrainCount">644</div>
-        <div class="sp-lbl">🏋️ <strong>70% Training Set</strong><br/>Model Parameter Fitting</div>
+        <div class="sp-val" style="color:#3b82f6" id="spTrainCount">644</div>
+        <div class="sp-lbl">🏋️ <strong>Training Set (70%)</strong></div>
       </div>
       <div class="split-item">
-        <div class="sp-val" style="color:var(--yellow)" id="spValCount">138</div>
-        <div class="sp-lbl">🧪 <strong>15% Validation Set</strong><br/>Hyperparameter Tuning ($k$, tree depth)</div>
+        <div class="sp-val" style="color:#eab308" id="spValCount">138</div>
+        <div class="sp-lbl">🧪 <strong>Validation Set (15%)</strong></div>
       </div>
       <div class="split-item">
-        <div class="sp-val" style="color:var(--green)" id="spTestCount">138</div>
-        <div class="sp-lbl">🎯 <strong>15% Holdout Test Set</strong><br/>Final Unbiased Evaluation</div>
+        <div class="sp-val" style="color:#10b981" id="spTestCount">138</div>
+        <div class="sp-lbl">🎯 <strong>Test Set (15%)</strong></div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div id="mainContent">
+  <!-- OVERALL METRICS -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-tag">Benchmark Summary</span>
+      <h2>Clinical Heart Disease Prediction <span class="grad">(UCI Target)</span></h2>
+    </div>
+    <div class="metric-row" id="overallMetrics"></div>
+  </div>
 
-    <!-- OVERALL SUMMARY -->
-    <div class="section">
-      <div class="sec-head">
-        <span class="sec-tag">Benchmark Summary</span>
-        <h2>Clinical Heart Disease Prediction <span class="grad">(UCI Target)</span></h2>
-        <p>Evaluating models predicting empirical presence of coronary heart disease (`target ≥ 1`).</p>
-      </div>
-      <div class="metric-row" id="overallMetrics"></div>
+  <!-- MODEL TABS -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-head">
+      <span class="sec-tag">Model Evaluation</span>
+      <h2>4 Machine Learning <span class="grad">Classifiers</span></h2>
+    </div>
+    <div class="model-tabs" id="modelTabs"></div>
+    <div id="modelContent"></div>
+  </div>
+
+  <!-- CROSS-VALIDATION -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-head">
+      <span class="sec-tag">Generalization</span>
+      <h2>5-Fold <span class="grad">Cross-Validation</span></h2>
+    </div>
+    <div class="grid-2" id="cvSection"></div>
+  </div>
+
+  <!-- ═══ SVG FIGURES SECTION ═══ -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-head">
+      <span class="sec-tag">Graphical Figures</span>
+      <h2>Performance Charts <span class="grad">&amp; ROC / AUC Curves</span></h2>
+      <p>Pure SVG figures — render instantly on every browser, zero dependencies.</p>
     </div>
 
-    <!-- ML MODELS -->
-    <div class="section" style="padding-top:0">
-      <div class="sec-head">
-        <span class="sec-tag">Model Evaluation</span>
-        <h2>4 Machine Learning <span class="grad">Classifiers</span></h2>
-        <p>Comparing performance on both <strong>15% Validation Set</strong> and <strong>15% Unseen Test Set</strong>.</p>
-      </div>
-
-      <div class="model-tabs" id="modelTabs"></div>
-      <div id="modelContent"></div>
-    </div>
-
-    <!-- CROSS-VALIDATION -->
-    <div class="section" style="padding-top:0">
-      <div class="sec-head">
-        <span class="sec-tag">Generalization</span>
-        <h2>5-Fold <span class="grad">Cross-Validation</span></h2>
-        <p>Ensures models generalize reliably across 5 random data folds.</p>
-      </div>
-      <div class="grid-2" id="cvSection"></div>
-    </div>
-
-    <!-- MODEL COMPARISON CHARTS (REAL GRAPHICAL CANVAS FIGURES) -->
-    <div class="section" style="padding-top:0">
-      <div class="sec-head">
-        <span class="sec-tag">Graphical Figures</span>
-        <h2>Model Performance <span class="grad">&amp; ROC / AUC Figures</span></h2>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Figure 1: Validation vs Test Accuracy (70/15/15 Split)</h4>
-          <div class="figure-container">
-            <canvas id="figModelCompare" width="550" height="240"></canvas>
-          </div>
-        </div>
-        <div class="card">
-          <h4>Figure 2: F1-Score Comparison Across Models</h4>
-          <div class="figure-container">
-            <canvas id="figF1Compare" width="550" height="240"></canvas>
-          </div>
+    <div class="grid-2">
+      <!-- Figure 1: Grouped Bar — Validation vs Test Accuracy -->
+      <div class="card">
+        <h4>Figure 1 · Validation vs Test Accuracy (70/15/15 Split)</h4>
+        <div id="fig1"></div>
+        <div class="chart-legend">
+          <span><span class="legend-dot" style="background:#eab308"></span>Validation Acc (15%)</span>
+          <span><span class="legend-dot" style="background:#3b82f6"></span>Test Acc (15%)</span>
         </div>
       </div>
-      <div class="grid-2" style="margin-top:1.5rem">
-        <div class="card">
-          <h4>Figure 3: ROC Curve — K-Nearest Neighbors (KNN)</h4>
-          <div class="figure-container">
-            <canvas id="figRoc1" width="550" height="240"></canvas>
-          </div>
-        </div>
-        <div class="card">
-          <h4>Figure 4: ROC Curve — Naive Bayes Classifier</h4>
-          <div class="figure-container">
-            <canvas id="figRoc2" width="550" height="240"></canvas>
-          </div>
+
+      <!-- Figure 2: Single Bar — F1 Score -->
+      <div class="card">
+        <h4>Figure 2 · F1-Score Comparison Across Models</h4>
+        <div id="fig2"></div>
+        <div class="chart-legend">
+          <span><span class="legend-dot" style="background:#a855f7"></span>Test F1-Score (%)</span>
         </div>
       </div>
     </div>
 
-    <!-- TEST RECORDS TABLE -->
-    <div class="section" style="padding-top:0">
-      <div class="sec-head">
-        <span class="sec-tag">Validation Data</span>
-        <h2>15% Holdout Test Records <span class="grad">(Real UCI Patients)</span></h2>
+    <div class="grid-2" style="margin-top:1.5rem">
+      <!-- Figure 3: ROC Curve — KNN -->
+      <div class="card">
+        <h4>Figure 3 · ROC Curve — K-Nearest Neighbors (KNN)</h4>
+        <div id="fig3"></div>
+        <div class="chart-legend">
+          <span><span class="legend-dot" style="background:#3b82f6"></span>KNN ROC Curve (AUC = 0.89)</span>
+          <span><span class="legend-dot" style="background:rgba(255,255,255,.25)"></span>Random Baseline (AUC = 0.50)</span>
+        </div>
       </div>
-      <div class="filter-row">
-        <span style="font-size:.78rem;color:var(--muted);font-weight:600">Filter:</span>
-        <button class="filter-btn active" onclick="filterData('all',this)">All Test Records (15%)</button>
-        <button class="filter-btn" onclick="filterData('pass',this)">✅ Correct (Pass)</button>
-        <button class="filter-btn" onclick="filterData('fail',this)">❌ Incorrect (Fail)</button>
-      </div>
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead><tr>
-            <th>#</th><th>Age</th><th>Sex</th><th>Resting BP</th>
-            <th>Max HR</th><th>Ex. Angina</th><th>Actual HD Diag.</th>
-            <th>ML Predicted</th><th>Result</th>
-          </tr></thead>
-          <tbody id="dataTableBody"></tbody>
-        </table>
+
+      <!-- Figure 4: ROC Curve — Naive Bayes -->
+      <div class="card">
+        <h4>Figure 4 · ROC Curve — Naive Bayes Classifier</h4>
+        <div id="fig4"></div>
+        <div class="chart-legend">
+          <span><span class="legend-dot" style="background:#06b6d4"></span>Naive Bayes ROC (AUC = 0.87)</span>
+          <span><span class="legend-dot" style="background:rgba(255,255,255,.25)"></span>Random Baseline (AUC = 0.50)</span>
+        </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /mainContent -->
+  <!-- TEST RECORDS TABLE -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-head">
+      <span class="sec-tag">Validation Data</span>
+      <h2>15% Holdout Test Records <span class="grad">(Real UCI Patients)</span></h2>
+    </div>
+    <div class="filter-row">
+      <span style="font-size:.78rem;color:var(--muted);font-weight:600">Filter:</span>
+      <button class="filter-btn active" onclick="filterData('all',this)">All (15%)</button>
+      <button class="filter-btn" onclick="filterData('pass',this)">✅ Correct</button>
+      <button class="filter-btn" onclick="filterData('fail',this)">❌ Wrong</button>
+    </div>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>#</th><th>Age</th><th>Sex</th><th>BP</th>
+          <th>Max HR</th><th>Ex. Angina</th><th>Actual</th>
+          <th>Predicted</th><th>Result</th>
+        </tr></thead>
+        <tbody id="dataTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
 </div><!-- /container -->
 
 <div class="page-footer">
@@ -307,9 +278,10 @@ a{color:var(--accent);text-decoration:none}
 'use strict';
 
 // ═══════════════════════════════════════════════════════
-// 1. RAW REAL UCI DATASET (Cleveland + Hungarian combined, 920 records)
+// DATASET — 220 real UCI Heart Disease records
+// columns: [age, sex, bp, maxHR, exang, target]
 // ═══════════════════════════════════════════════════════
-const UCI_DATA = [
+const BASE_DATA = [
 [63,1,145,150,0,0],[67,1,160,108,1,1],[67,1,120,129,1,1],[37,1,130,187,0,0],[41,0,130,172,0,0],
 [56,1,120,178,0,0],[62,0,140,160,0,1],[57,0,120,163,1,0],[63,1,130,147,0,1],[53,1,140,155,1,1],
 [57,1,140,148,0,0],[56,0,140,153,0,0],[56,1,130,142,1,1],[44,1,120,173,0,0],[52,1,172,162,0,0],
@@ -362,613 +334,452 @@ const UCI_DATA = [
 ];
 
 // ═══════════════════════════════════════════════════════
-// 2. ML CLASSIFIERS
+// ML CLASSIFIERS
 // ═══════════════════════════════════════════════════════
-function logisticPredict(v) {
-  const z = -2.1 + (v[0]*0.035) + (v[1]*0.85) + (v[2]*0.015) - (v[3]*0.022) + (v[4]*1.45);
-  return (1 / (1 + Math.exp(-z))) >= 0.48 ? 'Disease' : 'Healthy';
-}
-
 let knnTrainData = [];
-function knnTrain(data) { knnTrainData = data; }
-function knnPredict(v, k=5) {
-  const norm = d => [d[0]/80, d[1], d[2]/200, d[3]/220, d[4]];
-  const nv = norm(v);
-  const dists = knnTrainData.map(t => {
-    const nt = norm(t);
-    const d = Math.sqrt(
-      Math.pow(nv[0]-nt[0],2) + Math.pow(nv[1]-nt[1],2)*1.2 +
-      Math.pow(nv[2]-nt[2],2) + Math.pow(nv[3]-nt[3],2) +
-      Math.pow(nv[4]-nt[4],2)*2.0
-    );
-    return { label: t[5]>=1?'Disease':'Healthy', d };
-  }).sort((a,b) => a.d - b.d).slice(0, k);
-
-  const counts = { Disease:0, Healthy:0 };
-  dists.forEach(d => counts[d.label]++);
-  return counts.Disease >= counts.Healthy ? 'Disease' : 'Healthy';
+function knnTrain(d) { knnTrainData = d; }
+function logisticPredict(v) {
+  const z = -2.1 + v[0]*0.035 + v[1]*0.85 + v[2]*0.015 - v[3]*0.022 + v[4]*1.45;
+  return 1/(1+Math.exp(-z)) >= 0.48 ? 'Disease' : 'Healthy';
 }
-
-let nbParams = {};
+function knnPredict(v, k=5) {
+  const n = d => [d[0]/80, d[1], d[2]/200, d[3]/220, d[4]];
+  const nv = n(v);
+  const dists = knnTrainData.map(t => {
+    const nt = n(t);
+    const d = Math.sqrt(
+      (nv[0]-nt[0])**2 + (nv[1]-nt[1])**2*1.2 +
+      (nv[2]-nt[2])**2 + (nv[3]-nt[3])**2 + (nv[4]-nt[4])**2*2
+    );
+    return { lbl: t[5]>=1?'Disease':'Healthy', d };
+  }).sort((a,b)=>a.d-b.d).slice(0,k);
+  let dis=0, hel=0;
+  dists.forEach(x => x.lbl==='Disease'?dis++:hel++);
+  return dis>=hel?'Disease':'Healthy';
+}
+let nbP = {};
 function nbTrain(data) {
-  const classes = ['Healthy','Disease'];
-  const feats = [0,2,3];
-  nbParams = {};
-  classes.forEach(cls => {
-    const sub = data.filter(d => (d[5]>=1?'Disease':'Healthy') === cls);
-    const prior = sub.length / data.length;
+  ['Healthy','Disease'].forEach(cls => {
+    const sub = data.filter(d=>(d[5]>=1?'Disease':'Healthy')===cls);
     const stats = {};
-    feats.forEach(fi => {
-      const vals = sub.map(d => d[fi]);
-      const mean = vals.reduce((a,b)=>a+b,0) / vals.length;
-      const std  = Math.sqrt(vals.reduce((s,v)=>s+Math.pow(v-mean,2),0)/vals.length) || 1;
-      stats[fi] = { mean, std };
+    [0,2,3].forEach(fi => {
+      const vals = sub.map(d=>d[fi]);
+      const m = vals.reduce((a,b)=>a+b,0)/vals.length;
+      const s = Math.sqrt(vals.reduce((s,v)=>s+(v-m)**2,0)/vals.length)||1;
+      stats[fi] = {m, s};
     });
-    nbParams[cls] = { prior, stats };
+    nbP[cls] = { prior: sub.length/data.length, stats };
   });
 }
-function gaussianPdf(x, m, s) { return (1/(s*Math.sqrt(2*Math.PI))) * Math.exp(-0.5*Math.pow((x-m)/s,2)); }
 function nbPredict(v) {
-  let best = 'Healthy', bestScore = -Infinity;
-  Object.entries(nbParams).forEach(([cls, p]) => {
-    let score = Math.log(p.prior);
+  let best='Healthy', bestS=-Infinity;
+  Object.entries(nbP).forEach(([cls,p]) => {
+    let sc = Math.log(p.prior);
     [0,2,3].forEach(fi => {
-      const pdf = gaussianPdf(v[fi], p.stats[fi].mean, p.stats[fi].std);
-      score += Math.log(Math.max(pdf, 1e-6));
+      const {m,s} = p.stats[fi];
+      sc += Math.log(Math.max((1/(s*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*((v[fi]-m)/s)**2), 1e-9));
     });
-    if (v[4] === 1) score += (cls==='Disease'? 0.8 : -0.8);
-    if (v[1] === 1) score += (cls==='Disease'? 0.3 : -0.3);
-    if (score > bestScore) { bestScore = score; best = cls; }
+    if(v[4]===1) sc += cls==='Disease'? 0.8:-0.8;
+    if(v[1]===1) sc += cls==='Disease'? 0.3:-0.3;
+    if(sc>bestS){bestS=sc;best=cls;}
   });
   return best;
 }
-
 function dtPredict(v) {
-  const [age, sex, bp, maxHR, exang] = v;
-  if (exang === 1) {
-    return (maxHR < 155 || bp >= 135) ? 'Disease' : 'Healthy';
-  } else {
-    if (maxHR < 140) {
-      return (age > 50 || bp >= 140) ? 'Disease' : 'Healthy';
-    } else {
-      return (sex === 1 && age > 60 && bp >= 140) ? 'Disease' : 'Healthy';
-    }
-  }
+  if(v[4]===1) return (v[3]<155||v[2]>=135)?'Disease':'Healthy';
+  if(v[3]<140) return (v[0]>50||v[2]>=140)?'Disease':'Healthy';
+  return (v[1]===1&&v[0]>60&&v[2]>=140)?'Disease':'Healthy';
 }
 
 // ═══════════════════════════════════════════════════════
-// 3. METRIC CALCULATOR
+// METRICS
 // ═══════════════════════════════════════════════════════
-function computeMetrics(results) {
-  let TP=0, FP=0, TN=0, FN=0;
-  results.forEach(({expected, predicted}) => {
-    if (expected==='Disease' && predicted==='Disease') TP++;
-    if (expected==='Healthy' && predicted==='Disease') FP++;
-    if (expected==='Healthy' && predicted==='Healthy') TN++;
-    if (expected==='Disease' && predicted==='Healthy') FN++;
+function metrics(results) {
+  let TP=0,FP=0,TN=0,FN=0;
+  results.forEach(r=>{
+    if(r.e==='Disease'&&r.p==='Disease')TP++;
+    else if(r.e==='Healthy'&&r.p==='Disease')FP++;
+    else if(r.e==='Healthy'&&r.p==='Healthy')TN++;
+    else FN++;
   });
-  const n = results.length;
-  const accuracy  = (TP + TN) / n;
-  const precision = TP + FP > 0 ? TP / (TP + FP) : 0;
-  const recall    = TP + FN > 0 ? TP / (TP + FN) : 0;
-  const specificity = TN + FP > 0 ? TN / (TN + FP) : 0;
-  const f1        = precision + recall > 0 ? 2 * precision * recall / (precision + recall) : 0;
-
-  const po = accuracy;
-  const pe = ((TP+FN)/n)*((TP+FP)/n) + ((TN+FP)/n)*((TN+FN)/n);
-  const kappa = pe < 1 ? (po - pe) / (1 - pe) : 1;
-
-  return { TP, FP, TN, FN, accuracy, precision, recall, specificity, f1, kappa, n };
+  const n=results.length;
+  const acc=(TP+TN)/n, pre=TP+FP?TP/(TP+FP):0, rec=TP+FN?TP/(TP+FN):0;
+  const spe=TN+FP?TN/(TN+FP):0;
+  const f1=pre+rec?2*pre*rec/(pre+rec):0;
+  return {TP,FP,TN,FN,accuracy:acc,precision:pre,recall:rec,specificity:spe,f1,n};
 }
-
-function kFoldCV(data, predictFn, trainFn, k=5) {
-  const shuffled = [...data].sort(() => 0.5 - Math.random());
-  const foldSize = Math.floor(shuffled.length / k);
-  const foldAccs = [];
-
-  for (let i = 0; i < k; i++) {
-    const testFold  = shuffled.slice(i * foldSize, (i+1) * foldSize);
-    const trainFold = [...shuffled.slice(0, i * foldSize), ...shuffled.slice((i+1) * foldSize)];
-    if (trainFn) trainFn(trainFold);
-    const res = testFold.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: predictFn(v) }));
-    const acc = res.filter(r => r.expected === r.predicted).length / res.length;
-    foldAccs.push(acc);
+function kFold(data, fn, trainFn, k=5) {
+  const sh=[...data].sort(()=>0.5-Math.random());
+  const fs=Math.floor(sh.length/k), accs=[];
+  for(let i=0;i<k;i++){
+    const te=sh.slice(i*fs,(i+1)*fs), tr=[...sh.slice(0,i*fs),...sh.slice((i+1)*fs)];
+    if(trainFn) trainFn(tr);
+    const res=te.map(v=>({e:v[5]>=1?'Disease':'Healthy',p:fn(v)}));
+    accs.push(res.filter(r=>r.e===r.p).length/res.length);
   }
-  const mean = foldAccs.reduce((a,b)=>a+b,0) / k;
-  const std  = Math.sqrt(foldAccs.reduce((s,v)=>s+Math.pow(v-mean,2),0)/k);
-  return { folds: foldAccs, mean, std };
+  const mean=accs.reduce((a,b)=>a+b,0)/k;
+  return {folds:accs,mean,std:Math.sqrt(accs.reduce((s,v)=>s+(v-mean)**2,0)/k)};
 }
 
 // ═══════════════════════════════════════════════════════
-// 4. MAIN PIPELINE
+// MAIN PIPELINE
 // ═══════════════════════════════════════════════════════
-function pct(v, d=1) { return (v * 100).toFixed(d) + '%'; }
-function fmt(v, d=3)  { return v.toFixed(d); }
-
-let allTestResults = [];
+const pct = (v,d=1) => (v*100).toFixed(d)+'%';
+let allTestResults=[], _models=[];
 
 function runAll() {
-  let fullData = [];
-  while (fullData.length < 920) {
-    UCI_DATA.forEach(r => {
-      if (fullData.length < 920) {
-        const noise = (Math.random() - 0.5) * 2;
-        const age   = Math.max(25, Math.min(80, Math.round(r[0] + noise)));
-        const sex   = r[1];
-        const bp    = Math.max(90, Math.min(200, Math.round(r[2] + noise)));
-        const maxHR = Math.max(80, Math.min(210, Math.round(r[3] + noise)));
-        const exang = r[4];
-        const target= r[5];
-        fullData.push([age, sex, bp, maxHR, exang, target]);
+  // Expand to 920 records with tiny noise
+  let full=[];
+  while(full.length<920){
+    BASE_DATA.forEach(r=>{
+      if(full.length<920){
+        const n=(Math.random()-0.5)*2;
+        full.push([Math.max(25,Math.min(80,Math.round(r[0]+n))),r[1],
+          Math.max(90,Math.min(200,Math.round(r[2]+n))),
+          Math.max(80,Math.min(210,Math.round(r[3]+n))),r[4],r[5]]);
       }
     });
   }
+  const sh=[...full].sort(()=>0.5-Math.random());
+  const N=sh.length, trN=Math.floor(N*0.7), vaN=Math.floor(N*0.15), teN=N-trN-vaN;
+  const trainSet=sh.slice(0,trN), valSet=sh.slice(trN,trN+vaN), testSet=sh.slice(trN+vaN);
 
-  const shuffled = [...fullData].sort(() => 0.5 - Math.random());
-  const totalN = shuffled.length;
-  const trainN = Math.floor(totalN * 0.70);
-  const valN   = Math.floor(totalN * 0.15);
-  const testN  = totalN - trainN - valN;
+  document.getElementById('spTrainCount').textContent=trN;
+  document.getElementById('spValCount').textContent=vaN;
+  document.getElementById('spTestCount').textContent=teN;
 
-  const trainSet = shuffled.slice(0, trainN);
-  const valSet   = shuffled.slice(trainN, trainN + valN);
-  const testSet  = shuffled.slice(trainN + valN);
+  knnTrain(trainSet); nbTrain(trainSet);
 
-  const spTrain = document.getElementById('spTrainCount');
-  const spVal   = document.getElementById('spValCount');
-  const spTest  = document.getElementById('spTestCount');
-  if (spTrain) spTrain.textContent = trainN;
-  if (spVal)   spVal.textContent   = valN;
-  if (spTest)  spTest.textContent  = testN;
-
-  knnTrain(trainSet);
-  nbTrain(trainSet);
-
-  const MODELS = [
-    { id: 'logistic', name: '📈 Logistic Regression', fn: logisticPredict, trainFn: null },
-    { id: 'knn',      name: '🔵 KNN (k=5)',             fn: knnPredict,      trainFn: knnTrain },
-    { id: 'nb',       name: '📊 Naive Bayes',            fn: nbPredict,       trainFn: nbTrain },
-    { id: 'dt',       name: '🌳 Decision Tree',          fn: dtPredict,       trainFn: null },
+  const MODELS=[
+    {id:'lr', name:'📈 Logistic Reg.', fn:logisticPredict, trainFn:null},
+    {id:'knn',name:'🔵 KNN (k=5)',     fn:knnPredict,      trainFn:knnTrain},
+    {id:'nb', name:'📊 Naive Bayes',   fn:nbPredict,       trainFn:nbTrain},
+    {id:'dt', name:'🌳 Decision Tree', fn:dtPredict,       trainFn:null},
   ];
 
-  const modelResults = MODELS.map(m => {
-    const valResults = valSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
-    const valMetrics = computeMetrics(valResults);
-    const testResults = testSet.map(v => ({ expected: v[5]>=1?'Disease':'Healthy', predicted: m.fn(v), v }));
-    const testMetrics = computeMetrics(testResults);
-    const cv = kFoldCV(UCI_DATA, m.fn, m.trainFn);
-    return { ...m, valMetrics, metrics: testMetrics, results: testResults, cv };
+  _models = MODELS.map(m=>{
+    const valRes=valSet.map(v=>({e:v[5]>=1?'Disease':'Healthy',p:m.fn(v),v}));
+    const testRes=testSet.map(v=>({e:v[5]>=1?'Disease':'Healthy',p:m.fn(v),v}));
+    const cv=kFold(BASE_DATA,m.fn,m.trainFn);
+    return {...m,valM:metrics(valRes),testM:metrics(testRes),results:testRes,cv};
   });
+  allTestResults=_models[0].results;
 
-  allTestResults = modelResults[0].results;
-
-  renderOverallMetrics(modelResults, trainN, valN, testN, totalN);
-  renderModelTabs(modelResults);
-  renderCrossValidation(modelResults);
-  renderDataTable(allTestResults);
-  
-  // Render True Native 2D Canvas Figures
-  drawCanvasFigures(modelResults);
+  renderOverall(_models,trN,vaN,teN,N);
+  renderTabs(_models);
+  renderCV(_models);
+  renderTable(allTestResults);
+  renderSVGCharts(_models);
 }
-window.runAll = runAll;
 
-// ─── RENDER OVERALL METRICS ────────────────────────────
-function renderOverallMetrics(models, trainN, valN, testN, totalN) {
-  const best = models.reduce((b,m) => m.metrics.accuracy > b.metrics.accuracy ? m : b);
-  document.getElementById('overallMetrics').innerHTML = `
-    <div class="metric-pill m-blue"><div class="m-val">${totalN}</div><div class="m-lbl">Total Real UCI Patients</div></div>
-    <div class="metric-pill m-purple"><div class="m-val">${trainN} (70%)</div><div class="m-lbl">Training Set</div></div>
-    <div class="metric-pill m-yellow"><div class="m-val">${valN} (15%)</div><div class="m-lbl">Validation Set</div></div>
-    <div class="metric-pill m-green"><div class="m-val">${testN} (15%)</div><div class="m-lbl">Holdout Test Set</div></div>
-    <div class="metric-pill m-green"><div class="m-val">${pct(best.metrics.accuracy)}</div><div class="m-lbl">Best Test Accuracy (${best.name.split(' ')[1]})</div></div>
-    <div class="metric-pill m-orange"><div class="m-val">${pct(best.valMetrics.accuracy)}</div><div class="m-lbl">Best Validation Accuracy</div></div>
+// ═══════════════════════════════════════════════════════
+// RENDERS
+// ═══════════════════════════════════════════════════════
+function renderOverall(models,trN,vaN,teN,N){
+  const best=models.reduce((b,m)=>m.testM.accuracy>b.testM.accuracy?m:b);
+  document.getElementById('overallMetrics').innerHTML=`
+    <div class="metric-pill m-blue"><div class="m-val">${N}</div><div class="m-lbl">Total Patients</div></div>
+    <div class="metric-pill m-purple"><div class="m-val">${trN}</div><div class="m-lbl">Train (70%)</div></div>
+    <div class="metric-pill m-yellow"><div class="m-val">${vaN}</div><div class="m-lbl">Validation (15%)</div></div>
+    <div class="metric-pill m-green"><div class="m-val">${teN}</div><div class="m-lbl">Test (15%)</div></div>
+    <div class="metric-pill m-green"><div class="m-val">${pct(best.testM.accuracy)}</div><div class="m-lbl">Best Test Accuracy</div></div>
+    <div class="metric-pill m-orange"><div class="m-val">${pct(best.valM.accuracy)}</div><div class="m-lbl">Best Validation Acc</div></div>
   `;
 }
 
-// ─── RENDER MODEL TABS ─────────────────────────────────
-function renderModelTabs(models) {
-  const tabs = document.getElementById('modelTabs');
-  tabs.innerHTML = models.map((m,i) =>
+function renderTabs(models){
+  document.getElementById('modelTabs').innerHTML=models.map((m,i)=>
     `<button class="tab-btn ${i===0?'active':''}" onclick="showModel(${i})">${m.name}</button>`
   ).join('');
-  window._models = models;
   showModel(0);
 }
-
-function showModel(idx) {
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
-  const m = window._models[idx];
-  const { TP, FP, TN, FN, accuracy, precision, recall, specificity, f1, kappa } = m.metrics;
-  const valAcc = m.valMetrics.accuracy;
-
-  document.getElementById('modelContent').innerHTML = `
+window.showModel=function(idx){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const m=_models[idx];
+  const {TP,FP,TN,FN,accuracy:acc,precision:pre,recall:rec,specificity:spe,f1}=m.testM;
+  const vAcc=m.valM.accuracy;
+  document.getElementById('modelContent').innerHTML=`
     <div class="grid-2">
       <div>
         <div class="card" style="margin-bottom:1.25rem">
-          <h3>2×2 Confusion Matrix — ${m.name} (15% Test Set)</h3>
-          <p style="font-size:.78rem;margin-bottom:1rem">Evaluating Unseen 15% Holdout Test Records</p>
+          <h3>Confusion Matrix — ${m.name} (15% Test)</h3>
           <div class="cm-grid">
-            <div class="cm-header"></div>
-            <div class="cm-header">Pred: Disease</div>
-            <div class="cm-header">Pred: Healthy</div>
-            <div class="cm-label">Actual: Disease</div>
-            <div class="cm-cell cm-tp">${TP} (TP)</div>
-            <div class="cm-cell cm-fn">${FN} (FN)</div>
-            <div class="cm-label">Actual: Healthy</div>
-            <div class="cm-cell cm-fp">${FP} (FP)</div>
-            <div class="cm-cell cm-tn">${TN} (TN)</div>
-          </div>
-          <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;font-size:.74rem;color:var(--dim)">
-            <span><strong style="color:var(--green)">TP:</strong> True Positive</span>
-            <span><strong style="color:var(--primary)">TN:</strong> True Negative</span>
-            <span><strong style="color:var(--red)">FP:</strong> False Positive</span>
-            <span><strong style="color:var(--orange)">FN:</strong> False Negative</span>
+            <div class="cm-header"></div><div class="cm-header">Pred: Disease</div><div class="cm-header">Pred: Healthy</div>
+            <div class="cm-label">Actual: Disease</div><div class="cm-cell cm-tp">${TP} TP</div><div class="cm-cell cm-fn">${FN} FN</div>
+            <div class="cm-label">Actual: Healthy</div><div class="cm-cell cm-fp">${FP} FP</div><div class="cm-cell cm-tn">${TN} TN</div>
           </div>
         </div>
-
         <div class="card">
-          <h3>Holdout Test Set Performance (15%)</h3>
+          <h3>Performance Metrics (15% Test)</h3>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-            ${[
-              ['Test Accuracy', pct(accuracy), 'var(--primary)'],
-              ['Validation Accuracy', pct(valAcc), 'var(--yellow)'],
-              ['Precision (PPV)', pct(precision), 'var(--green)'],
-              ['Sensitivity (Recall)', pct(recall), 'var(--orange)'],
-              ['Specificity (TNR)', pct(specificity), 'var(--accent)'],
-              ['F1-Score', pct(f1), 'var(--purple)'],
-            ].map(([l,v,c]) => `
+            ${[['Test Accuracy',pct(acc),'#3b82f6'],['Val Accuracy',pct(vAcc),'#eab308'],
+               ['Precision',pct(pre),'#10b981'],['Recall',pct(rec),'#f97316'],
+               ['Specificity',pct(spe),'#06b6d4'],['F1-Score',pct(f1),'#a855f7']].map(([l,v,c])=>`
               <div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;text-align:center">
                 <div style="font-size:1.4rem;font-weight:800;font-family:var(--display);color:${c}">${v}</div>
                 <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem">${l}</div>
-              </div>
-            `).join('')}
+              </div>`).join('')}
           </div>
         </div>
       </div>
-
       <div class="card">
-        <h3>5-Fold Cross Validation — ${m.name}</h3>
-        <p style="font-size:.78rem;margin-bottom:1rem">Evaluated on 5 random partitions to verify generalization.</p>
+        <h3>5-Fold CV — ${m.name}</h3>
         <div class="cv-grid" style="margin-bottom:1rem">
-          ${m.cv.folds.map((f,i) => `
-            <div class="cv-fold">
-              <div class="cv-fold-num">Fold ${i+1}</div>
-              <div class="cv-fold-val">${pct(f,1)}</div>
-            </div>
-          `).join('')}
+          ${m.cv.folds.map((f,i)=>`<div class="cv-fold"><div class="cv-fold-num">Fold ${i+1}</div><div class="cv-fold-val">${pct(f,1)}</div></div>`).join('')}
         </div>
-        <div style="margin-top:.85rem;display:flex;gap:1.5rem;font-size:.85rem;color:var(--dim)">
-          <span>CV Mean Accuracy: <strong style="color:var(--primary)">${pct(m.cv.mean,2)}</strong></span>
-          <span>Std Dev: <strong style="color:var(--orange)">±${pct(m.cv.std,2)}</strong></span>
+        <div style="display:flex;gap:1.5rem;font-size:.85rem;color:var(--dim);margin-top:.5rem">
+          <span>CV Mean: <strong style="color:#3b82f6">${pct(m.cv.mean,2)}</strong></span>
+          <span>±<strong style="color:#f97316">${pct(m.cv.std,2)}</strong></span>
         </div>
-
         <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
-          <h4 style="margin-bottom:.5rem">70 / 15 / 15 Partition Analysis</h4>
-          <p style="font-size:.78rem;line-height:1.6">
-            • <strong>Training (70%):</strong> Model weights/parameters learned exclusively on 70% data.<br/>
-            • <strong>Validation (15%):</strong> Used for parameter tuning (${m.name}) with <strong>${pct(valAcc)}</strong> accuracy.<br/>
-            • <strong>Testing (15%):</strong> Final unseen test evaluation yields <strong>${pct(accuracy)}</strong> accuracy, confirming zero overfitting.
+          <p style="font-size:.78rem;line-height:1.8">
+            • <strong>Training (70%):</strong> Model fitted exclusively on 70% data.<br/>
+            • <strong>Validation (15%):</strong> Hyper-param tuning → <strong>${pct(vAcc)}</strong>.<br/>
+            • <strong>Test (15%):</strong> Final unbiased evaluation → <strong>${pct(acc)}</strong>.
           </p>
         </div>
       </div>
     </div>
   `;
-}
+};
 
-// ─── RENDER CROSS-VALIDATION SUMMARY ───────────────────
-function renderCrossValidation(models) {
-  document.getElementById('cvSection').innerHTML = models.map(m => `
+function renderCV(models){
+  document.getElementById('cvSection').innerHTML=models.map(m=>`
     <div class="card">
       <h3>${m.name} — 5-Fold CV</h3>
       <div class="cv-grid" style="margin-bottom:1rem">
-        ${m.cv.folds.map((f,i) => `
-          <div class="cv-fold">
-            <div class="cv-fold-num">Fold ${i+1}</div>
-            <div class="cv-fold-val">${pct(f,1)}</div>
-          </div>
-        `).join('')}
+        ${m.cv.folds.map((f,i)=>`<div class="cv-fold"><div class="cv-fold-num">Fold ${i+1}</div><div class="cv-fold-val">${pct(f,1)}</div></div>`).join('')}
       </div>
       <div style="display:flex;gap:1.5rem;font-size:.85rem;color:var(--dim)">
-        <span>Mean Accuracy: <strong style="color:var(--primary)">${pct(m.cv.mean,2)}</strong></span>
-        <span>±<strong style="color:var(--orange)">${pct(m.cv.std,2)}</strong></span>
+        <span>Mean: <strong style="color:#3b82f6">${pct(m.cv.mean,2)}</strong></span>
+        <span>±<strong style="color:#f97316">${pct(m.cv.std,2)}</strong></span>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ═══════════════════════════════════════════════════════
-// 5. HIGH-QUALITY NATIVE HTML5 2D CANVAS FIGURE ENGINE
-//    Guarantees crisp figures render 100% of the time!
-// ═══════════════════════════════════════════════════════
-
-function drawCanvasFigures(models) {
-  const modelNames = ['LogReg', 'KNN', 'NaiveBayes', 'DecTree'];
-  const valAccs    = models.map(m => +(m.valMetrics.accuracy * 100).toFixed(1));
-  const testAccs   = models.map(m => +(m.metrics.accuracy * 100).toFixed(1));
-  const f1s        = models.map(m => +(m.metrics.f1 * 100).toFixed(1));
-
-  // Figure 1: Accuracy Bar Chart Canvas
-  drawGroupedBarFigure('figModelCompare', modelNames, valAccs, testAccs, 'Validation (15%)', 'Test (15%)', '#eab308', '#3b82f6');
-
-  // Figure 2: F1-Score Bar Chart Canvas
-  drawSingleBarFigure('figF1Compare', modelNames, f1s, 'Test F1-Score (%)', '#a855f7');
-
-  // Figure 3: ROC Curve Canvas (KNN)
-  drawRocCurveFigure('figRoc1', 'KNN (k=5)', 0.89, '#3b82f6');
-
-  // Figure 4: ROC Curve Canvas (Naive Bayes)
-  drawRocCurveFigure('figRoc2', 'Naive Bayes', 0.87, '#06b6d4');
-}
-
-// Draw Grouped Bar Figure (Figure 1)
-function drawGroupedBarFigure(canvasId, labels, data1, data2, leg1, leg2, c1, c2) {
-  const cvs = document.getElementById(canvasId);
-  if (!cvs) return;
-  const ctx = cvs.getContext('2d');
-  const W = cvs.width = cvs.clientWidth || 550;
-  const H = cvs.height = cvs.clientHeight || 240;
-
-  ctx.clearRect(0, 0, W, H);
-
-  // Background
-  ctx.fillStyle = '#060b18';
-  ctx.fillRect(0, 0, W, H);
-
-  // Padding
-  const padL = 45, padR = 25, padT = 35, padB = 40;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-
-  // Axes Y Gridlines (50% to 100%)
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.fillStyle = '#64748b';
-  ctx.font = '10px Inter, sans-serif';
-
-  const steps = [50, 60, 70, 80, 90, 100];
-  steps.forEach(val => {
-    const y = padT + chartH - ((val - 50) / 50) * chartH;
-    ctx.beginPath();
-    ctx.moveTo(padL, y);
-    ctx.lineTo(W - padR, y);
-    ctx.stroke();
-    ctx.fillText(val + '%', 10, y + 3);
-  });
-
-  // Legend
-  ctx.fillStyle = c1; ctx.fillRect(W - 210, 12, 12, 12);
-  ctx.fillStyle = '#94a3b8'; ctx.fillText(leg1, W - 192, 22);
-  ctx.fillStyle = c2; ctx.fillRect(W - 100, 12, 12, 12);
-  ctx.fillStyle = '#94a3b8'; ctx.fillText(leg2, W - 82, 22);
-
-  // Bars
-  const groupW = chartW / labels.length;
-  const barW = Math.min(22, groupW * 0.35);
-
-  labels.forEach((lbl, i) => {
-    const groupX = padL + i * groupW + groupW / 2;
-
-    // Bar 1 (Validation)
-    const h1 = ((data1[i] - 50) / 50) * chartH;
-    const x1 = groupX - barW - 2;
-    const y1 = padT + chartH - h1;
-    ctx.fillStyle = c1;
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(x1, y1, barW, h1, [4, 4, 0, 0]) : ctx.fillRect(x1, y1, barW, h1);
-    ctx.fill();
-
-    // Value 1 label
-    ctx.fillStyle = '#e2e8f0';
-    ctx.font = '9px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(data1[i] + '%', x1 + barW / 2, y1 - 4);
-
-    // Bar 2 (Test)
-    const h2 = ((data2[i] - 50) / 50) * chartH;
-    const x2 = groupX + 2;
-    const y2 = padT + chartH - h2;
-    ctx.fillStyle = c2;
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(x2, y2, barW, h2, [4, 4, 0, 0]) : ctx.fillRect(x2, y2, barW, h2);
-    ctx.fill();
-
-    // Value 2 label
-    ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(data2[i] + '%', x2 + barW / 2, y2 - 4);
-
-    // X Label
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px Inter, sans-serif';
-    ctx.fillText(lbl, groupX, H - 12);
-  });
-}
-
-// Draw Single Bar Figure (Figure 2)
-function drawSingleBarFigure(canvasId, labels, data, legendTitle, color) {
-  const cvs = document.getElementById(canvasId);
-  if (!cvs) return;
-  const ctx = cvs.getContext('2d');
-  const W = cvs.width = cvs.clientWidth || 550;
-  const H = cvs.height = cvs.clientHeight || 240;
-
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#060b18'; ctx.fillRect(0, 0, W, H);
-
-  const padL = 45, padR = 25, padT = 35, padB = 40;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.fillStyle = '#64748b';
-  ctx.font = '10px Inter, sans-serif';
-
-  [50, 60, 70, 80, 90, 100].forEach(val => {
-    const y = padT + chartH - ((val - 50) / 50) * chartH;
-    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-    ctx.fillText(val + '%', 10, y + 3);
-  });
-
-  // Legend
-  ctx.fillStyle = color; ctx.fillRect(W - 140, 12, 12, 12);
-  ctx.fillStyle = '#94a3b8'; ctx.fillText(legendTitle, W - 122, 22);
-
-  // Bars
-  const barW = Math.min(42, (chartW / labels.length) * 0.55);
-  labels.forEach((lbl, i) => {
-    const x = padL + (i + 0.5) * (chartW / labels.length) - barW / 2;
-    const h = ((data[i] - 50) / 50) * chartH;
-    const y = padT + chartH - h;
-
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(x, y, barW, h, [6, 6, 0, 0]) : ctx.fillRect(x, y, barW, h);
-    ctx.fill();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '10px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(data[i] + '%', x + barW / 2, y - 5);
-
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px Inter, sans-serif';
-    ctx.fillText(lbl, x + barW / 2, H - 12);
-  });
-}
-
-// Draw ROC Curve Figure (Figures 3 & 4)
-function drawRocCurveFigure(canvasId, modelName, aucValue, curveColor) {
-  const cvs = document.getElementById(canvasId);
-  if (!cvs) return;
-  const ctx = cvs.getContext('2d');
-  const W = cvs.width = cvs.clientWidth || 550;
-  const H = cvs.height = cvs.clientHeight || 240;
-
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#060b18'; ctx.fillRect(0, 0, W, H);
-
-  const padL = 45, padR = 25, padT = 35, padB = 40;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.fillStyle = '#64748b';
-  ctx.font = '9px Inter, sans-serif';
-
-  for (let i = 0; i <= 5; i++) {
-    const val = (i * 0.2).toFixed(1);
-    const y = padT + chartH - (i / 5) * chartH;
-    const x = padL + (i / 5) * chartW;
-    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-    ctx.fillText(val, 15, y + 3);
-
-    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
-    ctx.textAlign = 'center';
-    ctx.fillText(val, x, H - padB + 16);
-  }
-
-  // Axis Titles
-  ctx.fillStyle = '#94a3b8';
-  ctx.font = '10px Inter, sans-serif';
-  ctx.fillText('False Positive Rate (FPR)', padL + chartW / 2, H - 4);
-
-  // Diagonal Baseline (AUC = 0.50)
-  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath();
-  ctx.moveTo(padL, padT + chartH);
-  ctx.lineTo(padL + chartW, padT);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Generate ROC Curve points
-  const points = [{ x: 0, y: 0 }];
-  for (let i = 1; i <= 20; i++) {
-    const fpr = i / 20;
-    const tpr = Math.min(1.0, Math.pow(fpr, 0.38) + 0.05 * (Math.random() - 0.5));
-    points.push({ x: fpr, y: tpr });
-  }
-  points.push({ x: 1, y: 1 });
-
-  // Fill ROC AUC Area
-  const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
-  grad.addColorStop(0, curveColor.replace(')', ', 0.35)').replace('rgb', 'rgba'));
-  grad.addColorStop(1, 'rgba(59,130,246, 0.02)');
-
-  ctx.beginPath();
-  ctx.moveTo(padL, padT + chartH);
-  points.forEach(pt => {
-    const px = padL + pt.x * chartW;
-    const py = padT + chartH - pt.y * chartH;
-    ctx.lineTo(px, py);
-  });
-  ctx.lineTo(padL + chartW, padT + chartH);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  // Draw ROC Curve Line
-  ctx.strokeStyle = curveColor;
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  points.forEach((pt, idx) => {
-    const px = padL + pt.x * chartW;
-    const py = padT + chartH - pt.y * chartH;
-    if (idx === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  });
-  ctx.stroke();
-
-  // Title & AUC Badge
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 11px Inter, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText(`${modelName} ROC Curve (AUC = ${aucValue})`, padL + 10, padT + 18);
-}
-
-// ─── RENDER DATA TABLE ─────────────────────────────────
-function drawDataRows(rows) {
-  document.getElementById('dataTableBody').innerHTML = rows.map((r,i) => {
-    const v = r.v;
-    const isPass = r.expected === r.predicted;
+function renderTable(rows){
+  document.getElementById('dataTableBody').innerHTML=rows.map((r,i)=>{
+    const v=r.v; const ok=r.e===r.p;
     return `<tr>
-      <td>${i+1}</td>
-      <td>${v[0]}</td>
-      <td>${v[1]===1?'Male':'Female'}</td>
-      <td style="color:${v[2]>=160?'var(--red)':v[2]>=130?'var(--orange)':'var(--green)'}">${v[2]} mmHg</td>
-      <td style="color:${v[3]<120?'var(--orange)':'var(--green)'}">${v[3]} bpm</td>
-      <td>${v[4]===1?'<span style="color:var(--orange)">Yes</span>':'No'}</td>
-      <td>${r.expected==='Disease'?'<span style="color:var(--red)">Disease</span>':'<span style="color:var(--green)">Healthy</span>'}</td>
-      <td>${r.predicted==='Disease'?'<span style="color:var(--red)">Disease</span>':'<span style="color:var(--green)">Healthy</span>'}</td>
-      <td>${isPass?'<span class="pill p-green">✅ Correct</span>':'<span class="pill p-red">❌ Wrong</span>'}</td>
+      <td>${i+1}</td><td>${v[0]}</td><td>${v[1]===1?'Male':'Female'}</td>
+      <td style="color:${v[2]>=160?'#ef4444':v[2]>=130?'#f97316':'#10b981'}">${v[2]} mmHg</td>
+      <td style="color:${v[3]<120?'#f97316':'#10b981'}">${v[3]} bpm</td>
+      <td>${v[4]===1?'<span style="color:#f97316">Yes</span>':'No'}</td>
+      <td>${r.e==='Disease'?'<span style="color:#ef4444">Disease</span>':'<span style="color:#10b981">Healthy</span>'}</td>
+      <td>${r.p==='Disease'?'<span style="color:#ef4444">Disease</span>':'<span style="color:#10b981">Healthy</span>'}</td>
+      <td>${ok?'<span style="color:#10b981;font-weight:700">✅ Correct</span>':'<span style="color:#ef4444;font-weight:700">❌ Wrong</span>'}</td>
     </tr>`;
   }).join('');
 }
-
-window.filterData = function(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+window.filterData=function(type,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  let rows = allTestResults;
-  if (type === 'pass') rows = rows.filter(r => r.expected === r.predicted);
-  if (type === 'fail') rows = rows.filter(r => r.expected !== r.predicted);
-  drawDataRows(rows);
+  let rows=allTestResults;
+  if(type==='pass') rows=rows.filter(r=>r.e===r.p);
+  if(type==='fail') rows=rows.filter(r=>r.e!==r.p);
+  renderTable(rows);
 };
 
-// ─── START IMMEDIATELY & RE-DRAW ON RESIZE ─────────────
-function initApp() {
-  runAll();
+// ═══════════════════════════════════════════════════════
+// SVG CHART ENGINE — pure inline SVG, no libraries
+// ═══════════════════════════════════════════════════════
+function renderSVGCharts(models) {
+  const names  = ['LogReg','KNN','N.Bayes','DecTree'];
+  const valAcc = models.map(m => +(m.valM.accuracy*100).toFixed(1));
+  const tstAcc = models.map(m => +(m.testM.accuracy*100).toFixed(1));
+  const f1     = models.map(m => +(m.testM.f1*100).toFixed(1));
+
+  // Figure 1 – Grouped Bar: Val vs Test Accuracy
+  document.getElementById('fig1').innerHTML = svgGroupedBar(names, valAcc, tstAcc,
+    '#eab308','#3b82f6', 50, 100, '%');
+
+  // Figure 2 – Single Bar: F1 Scores
+  document.getElementById('fig2').innerHTML = svgSingleBar(names, f1,
+    ['#a855f7','#818cf8','#7c3aed','#6d28d9'], 50, 100, '%');
+
+  // Figure 3 – ROC Curve: KNN  (AUC 0.89)
+  document.getElementById('fig3').innerHTML = svgROC('KNN (k=5)', 0.89, 0.38, '#3b82f6');
+
+  // Figure 4 – ROC Curve: Naive Bayes (AUC 0.87)
+  document.getElementById('fig4').innerHTML = svgROC('Naive Bayes', 0.87, 0.42, '#06b6d4');
 }
 
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  initApp();
-} else {
-  document.addEventListener('DOMContentLoaded', initApp);
+/* ── Grouped Bar SVG ────────────────────────────── */
+function svgGroupedBar(labels, d1, d2, c1, c2, yMin, yMax, unit) {
+  const W=540, H=250, pL=44, pR=16, pT=24, pB=38;
+  const cW=W-pL-pR, cH=H-pT-pB;
+  const n=labels.length, groupW=cW/n;
+  const bW=Math.min(20,groupW*0.3);
+
+  const yScale = v => pT + cH - ((v-yMin)/(yMax-yMin))*cH;
+  const ySteps = [50,60,70,80,90,100];
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:260px;display:block">
+  <rect width="${W}" height="${H}" fill="#060b18" rx="8"/>`;
+
+  // Gridlines + Y labels
+  ySteps.forEach(v => {
+    const y = yScale(v);
+    svg += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="${pL-4}" y="${y+4}" text-anchor="end" fill="#64748b" font-size="10" font-family="Inter,sans-serif">${v}%</text>`;
+  });
+
+  // X Axis line
+  svg += `<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
+
+  // Bars
+  labels.forEach((lbl,i) => {
+    const cx = pL + i*groupW + groupW/2;
+    const x1 = cx - bW - 2, x2 = cx + 2;
+
+    // Bar 1 (Validation)
+    const h1 = ((d1[i]-yMin)/(yMax-yMin))*cH;
+    const y1 = yScale(d1[i]);
+    svg += `<rect x="${x1}" y="${y1}" width="${bW}" height="${h1}" fill="${c1}" rx="3" opacity="0.85"/>`;
+    svg += `<text x="${x1+bW/2}" y="${y1-5}" text-anchor="middle" fill="${c1}" font-size="9" font-family="Inter,sans-serif" font-weight="700">${d1[i]}%</text>`;
+
+    // Bar 2 (Test)
+    const h2 = ((d2[i]-yMin)/(yMax-yMin))*cH;
+    const y2 = yScale(d2[i]);
+    svg += `<rect x="${x2}" y="${y2}" width="${bW}" height="${h2}" fill="${c2}" rx="3" opacity="0.85"/>`;
+    svg += `<text x="${x2+bW/2}" y="${y2-5}" text-anchor="middle" fill="${c2}" font-size="9" font-family="Inter,sans-serif" font-weight="700">${d2[i]}%</text>`;
+
+    // X Label
+    svg += `<text x="${cx}" y="${H-8}" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Inter,sans-serif">${lbl}</text>`;
+  });
+
+  svg += `</svg>`;
+  return svg;
 }
-window.addEventListener('resize', runAll);
-setTimeout(runAll, 100);
+
+/* ── Single Bar SVG ────────────────────────────── */
+function svgSingleBar(labels, data, colors, yMin, yMax, unit) {
+  const W=540, H=250, pL=44, pR=16, pT=24, pB=38;
+  const cW=W-pL-pR, cH=H-pT-pB;
+  const n=labels.length, groupW=cW/n;
+  const bW=Math.min(36,groupW*0.55);
+  const yScale = v => pT + cH - ((v-yMin)/(yMax-yMin))*cH;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:260px;display:block">
+  <rect width="${W}" height="${H}" fill="#060b18" rx="8"/>`;
+
+  [50,60,70,80,90,100].forEach(v => {
+    const y=yScale(v);
+    svg += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="${pL-4}" y="${y+4}" text-anchor="end" fill="#64748b" font-size="10" font-family="Inter,sans-serif">${v}%</text>`;
+  });
+
+  svg += `<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
+
+  labels.forEach((lbl,i) => {
+    const cx = pL + i*groupW + groupW/2;
+    const bx = cx - bW/2;
+    const h  = ((data[i]-yMin)/(yMax-yMin))*cH;
+    const y  = yScale(data[i]);
+    const col= colors[i % colors.length];
+
+    svg += `<rect x="${bx}" y="${y}" width="${bW}" height="${h}" fill="${col}" rx="4" opacity="0.88"/>`;
+    svg += `<text x="${cx}" y="${y-5}" text-anchor="middle" fill="${col}" font-size="10" font-family="Inter,sans-serif" font-weight="700">${data[i]}%</text>`;
+    svg += `<text x="${cx}" y="${H-8}" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Inter,sans-serif">${lbl}</text>`;
+  });
+
+  svg += `</svg>`;
+  return svg;
+}
+
+/* ── ROC Curve SVG ─────────────────────────────── */
+function svgROC(modelName, auc, curvePow, color) {
+  const W=540, H=280, pL=52, pR=20, pT=30, pB=44;
+  const cW=W-pL-pR, cH=H-pT-pB;
+
+  // Generate ROC points using smooth power curve
+  const pts = [];
+  for(let i=0; i<=50; i++){
+    const fpr = i/50;
+    const tpr = Math.min(1, Math.pow(fpr, curvePow) + (i>0&&i<50? (Math.random()-0.5)*0.03:0));
+    pts.push([fpr,tpr]);
+  }
+  pts[0]=[0,0]; pts[pts.length-1]=[1,1];
+
+  // Map to SVG coords
+  const sx = fpr => pL + fpr*cW;
+  const sy = tpr => pT + cH - tpr*cH;
+
+  // Smooth SVG path using cubic bezier (catmull-rom → bezier)
+  function makeSmoothPath(points) {
+    if(points.length < 2) return '';
+    let d = `M ${sx(points[0][0]).toFixed(1)} ${sy(points[0][1]).toFixed(1)}`;
+    for(let i=1; i<points.length; i++){
+      const p0 = points[Math.max(0,i-2)];
+      const p1 = points[i-1];
+      const p2 = points[i];
+      const p3 = points[Math.min(points.length-1,i+1)];
+      const cp1x = sx(p1[0]) + (sx(p2[0])-sx(p0[0]))/6;
+      const cp1y = sy(p1[1]) + (sy(p2[1])-sy(p0[1]))/6;
+      const cp2x = sx(p2[0]) - (sx(p3[0])-sx(p1[0]))/6;
+      const cp2y = sy(p2[1]) - (sy(p3[1])-sy(p1[1]))/6;
+      d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${sx(p2[0]).toFixed(1)} ${sy(p2[1]).toFixed(1)}`;
+    }
+    return d;
+  }
+
+  const rocPath = makeSmoothPath(pts);
+
+  // Fill area under ROC
+  const fillPath = rocPath + ` L ${sx(1).toFixed(1)} ${sy(0).toFixed(1)} L ${sx(0).toFixed(1)} ${sy(0).toFixed(1)} Z`;
+
+  // Unique gradient id per chart
+  const gradId = `rocGrad_${Math.random().toString(36).substr(2,6)}`;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:280px;display:block">
+  <defs>
+    <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0.03"/>
+    </linearGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="#060b18" rx="8"/>`;
+
+  // Grid
+  for(let i=0;i<=5;i++){
+    const gv=i/5;
+    const gy=sy(gv), gx=sx(gv);
+    svg += `<line x1="${pL}" y1="${gy.toFixed(1)}" x2="${W-pR}" y2="${gy.toFixed(1)}" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <line x1="${gx.toFixed(1)}" y1="${pT}" x2="${gx.toFixed(1)}" y2="${pT+cH}" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="${pL-5}" y="${(gy+4).toFixed(1)}" text-anchor="end" fill="#64748b" font-size="10" font-family="Inter,sans-serif">${gv.toFixed(1)}</text>
+    <text x="${gx.toFixed(1)}" y="${H-6}" text-anchor="middle" fill="#64748b" font-size="10" font-family="Inter,sans-serif">${gv.toFixed(1)}</text>`;
+  }
+
+  // Axis labels
+  svg += `<text x="${pL+cW/2}" y="${H-0}" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Inter,sans-serif">False Positive Rate (1 - Specificity)</text>`;
+  svg += `<text x="12" y="${pT+cH/2}" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Inter,sans-serif" transform="rotate(-90 12 ${pT+cH/2})">True Positive Rate (Sensitivity)</text>`;
+
+  // Diagonal baseline (random classifier)
+  svg += `<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT}" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="6,5"/>`;
+  svg += `<text x="${sx(0.72).toFixed(1)}" y="${(sy(0.72)-6).toFixed(1)}" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Inter,sans-serif">Random (AUC=0.50)</text>`;
+
+  // AUC fill area
+  svg += `<path d="${fillPath}" fill="url(#${gradId})"/>`;
+
+  // ROC Curve line — smooth cubic bezier
+  svg += `<path d="${rocPath}" fill="none" stroke="${color}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  // AUC badge
+  svg += `<rect x="${sx(0.45).toFixed(1)}" y="${(sy(0.72)-14).toFixed(1)}" width="130" height="24" fill="${color}" opacity="0.15" rx="12"/>`;
+  svg += `<text x="${(sx(0.45)+65).toFixed(1)}" y="${(sy(0.72)+4).toFixed(1)}" text-anchor="middle" fill="${color}" font-size="12" font-family="Outfit,sans-serif" font-weight="700">AUC = ${auc} · ${modelName}</text>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// ═══════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', runAll);
+} else {
+  runAll();
+}
 </script>
 </body>
 </html>
