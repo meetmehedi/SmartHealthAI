@@ -62,8 +62,8 @@
       </div>
       <div class="hero-stats">
         <a href="validation.html" class="stat-card stat-card-link" title="Click to view 70/15/15 ML Validation Report">
-          <span class="stat-value">85.5%</span>
-          <span class="stat-label">Real AI Accuracy <span class="stat-badge">UCI Benchmark ↗</span></span>
+          <span class="stat-value" id="heroAccuracyVal">…</span>
+          <span class="stat-label">Real AI Accuracy <span class="stat-badge" id="heroAccuracyBadge">UCI Benchmark ↗</span></span>
         </a>
         <div class="stat-divider"></div>
         <div class="stat-card">
@@ -322,7 +322,7 @@
           <!-- Real ML Model Score & Confidence Row -->
           <div class="ai-metrics-row">
             <div class="ai-metric-pill">
-              <div class="m-val" style="color: #10b981;">85.5%</div>
+              <div class="m-val" id="reportAccuracyVal" style="color: #10b981;">…</div>
               <div class="m-lbl">Model Accuracy (UCI Benchmark)</div>
             </div>
             <div class="ai-metric-pill">
@@ -330,8 +330,8 @@
               <div class="m-lbl">Prediction Confidence</div>
             </div>
             <div class="ai-metric-pill">
-              <div class="m-val" style="font-size: 1.1rem; color: #a855f7;">KNN (k=5)</div>
-              <div class="m-lbl">Trained ML Algorithm</div>
+              <div class="m-val" id="reportModelName" style="font-size: 1.1rem; color: #a855f7;">…</div>
+              <div class="m-lbl">Best ML Algorithm</div>
             </div>
           </div>
           <div class="ai-diagnosis-grid" id="aiDiagnosisGrid"></div>
@@ -506,6 +506,7 @@
     </div>
   </div>
 
+  <script src="ml-engine.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

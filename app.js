@@ -17,6 +17,35 @@ let heroEcgAnimId = null;
 // ── PATIENT RECORDS ──────────────────────────────────────
 let patients = JSON.parse(localStorage.getItem('shai_patients') || '[]');
 
+// ── ML ENGINE BOOT ────────────────────────────────────────
+// Run the same 70/15/15 UCI pipeline from ml-engine.js so the
+// dashboard shows the actual computed accuracy, not a hardcoded value.
+let _mlResult = null;
+(function bootMLEngine() {
+  if (typeof window.SmartHealthML === 'undefined') return;
+  try {
+    _mlResult = window.SmartHealthML.run();
+    const pct = v => (v * 100).toFixed(1) + '%';
+
+    // Hero accuracy stat card
+    const heroVal = $('heroAccuracyVal');
+    if (heroVal) heroVal.textContent = pct(_mlResult.bestAccuracy);
+
+    const heroBadge = $('heroAccuracyBadge');
+    if (heroBadge) heroBadge.textContent = _mlResult.bestModel + ' · UCI ↗';
+
+    // Report card (shown when AI analysis runs)
+    const repAcc  = $('reportAccuracyVal');
+    if (repAcc)  repAcc.textContent  = pct(_mlResult.bestAccuracy);
+
+    const repName = $('reportModelName');
+    if (repName) repName.textContent = _mlResult.bestModel;
+
+  } catch(e) {
+    console.warn('SmartHealthML boot error:', e);
+  }
+})();
+
 // ── INITIAL DEMO PATIENTS ─────────────────────────────────
 const DEMO_PATIENTS = [
   { name: 'MST Laboni Khatun', age: 22, hr: 76, spo2: 98, temp: 36.7, bp: 115, time: '08:30 AM' },
