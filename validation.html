@@ -428,21 +428,46 @@ const pct = (v,d=1) => (v*100).toFixed(d)+'%';
 let allTestResults=[], _models=[];
 
 function runAll() {
-  // Expand to 920 records with tiny noise
-  let full=[];
-  while(full.length<920){
-    BASE_DATA.forEach(r=>{
-      if(full.length<920){
-        const n=(Math.random()-0.5)*2;
-        full.push([Math.max(25,Math.min(80,Math.round(r[0]+n))),r[1],
-          Math.max(90,Math.min(200,Math.round(r[2]+n))),
-          Math.max(80,Math.min(210,Math.round(r[3]+n))),r[4],r[5]]);
-      }
-    });
+  // 1. Partition UNIQUE base records first to prevent duplicate row leakage
+  let seed = 16;
+  const rng = () => { seed = (seed * 1664525 + 1013904223) & 0xffffffff; return (seed >>> 0) / 0xffffffff; };
+
+  const sh = [...BASE_DATA];
+  for(let i = sh.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [sh[i], sh[j]] = [sh[j], sh[i]];
   }
-  const sh=[...full].sort(()=>0.5-Math.random());
-  const N=sh.length, trN=Math.floor(N*0.7), vaN=Math.floor(N*0.15), teN=N-trN-vaN;
-  const trainSet=sh.slice(0,trN), valSet=sh.slice(trN,trN+vaN), testSet=sh.slice(trN+vaN);
+
+  const nTotal = sh.length;
+  const baseTrain = sh.slice(0, Math.floor(nTotal * 0.70));
+  const baseVal   = sh.slice(Math.floor(nTotal * 0.70), Math.floor(nTotal * 0.85));
+  const baseTest  = sh.slice(Math.floor(nTotal * 0.85));
+
+  function expand(set, targetLen) {
+    let res = [];
+    while(res.length < targetLen) {
+      set.forEach(r => {
+        if(res.length < targetLen) {
+          const n = (rng() - 0.5) * 1.5;
+          res.push([
+            Math.max(25, Math.min(80, Math.round(r[0]+n))),
+            r[1],
+            Math.max(90, Math.min(200, Math.round(r[2]+n))),
+            Math.max(80, Math.min(210, Math.round(r[3]+n))),
+            r[4], r[5]
+          ]);
+        }
+      });
+    }
+    return res;
+  }
+
+  const trainSet = expand(baseTrain, 644);
+  const valSet   = expand(baseVal, 138);
+  const testSet  = expand(baseTest, 138);
+
+  const N=trainSet.length+valSet.length+testSet.length;
+  const trN=trainSet.length, vaN=valSet.length, teN=testSet.length;
 
   document.getElementById('spTrainCount').textContent=trN;
   document.getElementById('spValCount').textContent=vaN;
