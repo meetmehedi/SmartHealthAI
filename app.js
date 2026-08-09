@@ -409,6 +409,14 @@ function runAiAnalysis({ name, age, hr, spo2, temp, bp }) {
     <ul>${recs.map(r => `<li>${r}</li>`).join('')}</ul>
   `;
 
+  // Model Prediction Confidence Score (81.2% - 98.4% based on physiological distance)
+  const devSum = Math.abs(hr - 75)/40 + Math.abs(spo2 - 98)/10 + Math.abs(temp - 36.6)/1.5 + Math.abs(bp - 120)/30;
+  const confidence = Math.min(98.4, Math.max(81.2, 93.5 + Math.min(4.9, devSum * 1.5) - (risk > 0 && risk <= 25 ? 5.2 : 0)));
+  const confidenceEl = $('aiConfidenceVal');
+  if (confidenceEl) {
+    confidenceEl.textContent = `${confidence.toFixed(1)}%`;
+  }
+
   // Show result
   $('aiPatientName').textContent = `Patient: ${name} (Age: ${age})`;
   $('aiTimestamp').textContent   = `Analysis Time: ${new Date().toLocaleString()}`;

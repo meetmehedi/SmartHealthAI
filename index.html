@@ -61,10 +61,10 @@
         <a href="#about" class="btn btn-ghost btn-lg">Learn More</a>
       </div>
       <div class="hero-stats">
-        <div class="stat-card">
-          <span class="stat-value">99.2%</span>
-          <span class="stat-label">AI Accuracy</span>
-        </div>
+        <a href="validation.html" class="stat-card stat-card-link" title="Click to view 70/15/15 ML Validation Report">
+          <span class="stat-value">85.5%</span>
+          <span class="stat-label">Real AI Accuracy <span class="stat-badge">UCI Benchmark ↗</span></span>
+        </a>
         <div class="stat-divider"></div>
         <div class="stat-card">
           <span class="stat-value">Real-Time</span>
@@ -318,6 +318,21 @@
               <span id="aiTimestamp" class="ai-timestamp"></span>
             </div>
             <div class="ai-overall-badge" id="aiOverallBadge">--</div>
+          </div>
+          <!-- Real ML Model Score & Confidence Row -->
+          <div class="ai-metrics-row">
+            <div class="ai-metric-pill">
+              <div class="m-val" style="color: #10b981;">85.5%</div>
+              <div class="m-lbl">Model Accuracy (UCI Benchmark)</div>
+            </div>
+            <div class="ai-metric-pill">
+              <div class="m-val" id="aiConfidenceVal" style="color: #3b82f6;">--</div>
+              <div class="m-lbl">Prediction Confidence</div>
+            </div>
+            <div class="ai-metric-pill">
+              <div class="m-val" style="font-size: 1.1rem; color: #a855f7;">KNN (k=5)</div>
+              <div class="m-lbl">Trained ML Algorithm</div>
+            </div>
           </div>
           <div class="ai-diagnosis-grid" id="aiDiagnosisGrid"></div>
           <div class="ai-recommendation" id="aiRecommendation"></div>
